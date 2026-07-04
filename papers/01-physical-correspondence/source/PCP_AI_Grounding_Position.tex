@@ -1,0 +1,2117 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\documentclass[
+]{article}
+\usepackage{xcolor}
+\usepackage{amsmath,amssymb}
+\usepackage{authblk}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\ifLuaTeX
+  \usepackage{luacolor}
+  \usepackage[soul]{lua-ul}
+\else
+  \usepackage{soul}
+\fi
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{%
+Reality as Corrective: \\
+Physical Grounding as a Unified Solution \\
+to AI Alignment Pathologies \\
+\large ``Finding Ground Truth in the Garden of Infinite
+Fictions''}
+\author[1]{Nathan Martin}
+\author[2]{Claude Sonnet 4.6}
+\affil[1]{Independent Researcher}
+\affil[2]{Research assistance and co-drafting (Anthropic)}
+
+\date{March 2026}
+
+\begin{document}
+\maketitle
+
+\emph{Working Draft}
+
+\emph{\textbf{``Finding Ground Truth in the Garden of Infinite
+Fictions''}}
+
+\emph{Reality is the truth. Physical reality --- matter, energy, and
+time, as it is and has been --- is the only external corrective that any
+mind has ever had for distinguishing what is truly known from what is
+merely believed.}
+
+\emph{Any symbolic model of the world that diverges from physical
+reality can be misaligned in one of three ways: Incomplete, containing
+unknowns not yet accounted for. Wrong, falsified when tested against
+itself or the world. Fictional, built upon existing meanings and
+concepts but answerable only to itself. Ideas can be fictionalized in
+unlimited ways --- becoming creative, mythological, speculative,
+comforting, frightening, whimsical, random, inverted, mistaken\ldots{}
+Finite seeds of truth growing into an infinite garden of fictions.}
+
+\emph{This abundance and variety is not without value, but asymmetry
+matters enormously when building systems that learn from everything
+humans have ever written. The verified and the invented arrive as
+statistically equivalent tokens. Without labels, there is no signal.
+This paper is about what happens when that signal is absent --- and what
+it would take to restore it.}
+
+\section{\texorpdfstring{\textbf{Significance
+Statement}}{Significance Statement}}\label{significance-statement}
+
+Every mind --- human or artificial --- is only as reliable as its
+ability to distinguish what has been tested against physical reality
+from what has merely been believed, inherited, or imagined. This paper
+identifies a structural flaw at the foundation of current AI training
+practice: the systems we are building to think alongside us are being
+trained on human knowledge without the epistemic distinctions that would
+allow them to know the difference between verified fact and confident
+myth. We propose the Physical Correspondence Principle --- a requirement
+that training content be labeled according to its relationship to
+physical reality --- as the engineering analog of the reality-testing
+mechanisms that evolution built into biological minds. The failure modes
+this addresses --- hallucination, sycophancy, model collapse, and
+alignment drift --- are not separate technical problems. They are
+symptoms of a single underlying cause: disconnection from the world as
+an external corrective. Getting this right is not only an AI safety
+requirement. It is the continuation of the oldest and most important
+project in human intellectual history: learning to tell the difference
+between what we know and what we only believe.
+
+\section{\texorpdfstring{\textbf{Abstract}}{Abstract}}\label{abstract}
+
+Large language models\footnote{\emph{Throughout this paper,
+  \textquotesingle large language model\textquotesingle{} (LLM) is used
+  as a convenient shorthand for the broader class of modern neural
+  language systems, including multimodal, hybrid, spiking, and embodied
+  architectures. The Physical Correspondence Principle applies to any AI
+  training corpus regardless of modality or architecture.}} trained on
+human-generated text inherit not only human knowledge but human
+epistemic failures --- including mythology, unfalsifiable belief
+systems, and culturally inherited narratives presented without
+evidential distinction from empirically verified claims. We identify
+this structural feature of training corpora as a common causal mechanism
+underlying several documented AI failure modes: hallucination,
+sycophancy, model collapse, and alignment drift. Drawing on the symbol
+grounding literature, information theory, Gödel\textquotesingle s
+Incompleteness Theorems reinterpreted as a physicalist argument, and the
+neuroscience of reality monitoring, we propose the Physical
+Correspondence Principle (PCP) --- the requirement that training content
+be categorically labeled according to its epistemic provenance and its
+correspondence with physically verified reality. We argue that the PCP
+is not merely a philosophical improvement but a practical AI safety
+requirement: the engineering analog of the biological reality monitoring
+system that evolution developed to keep cognition anchored to the
+physical world. The principle accommodates sim-to-real training
+environments and does not require grounding to ultimate base reality,
+but only to a causally consistent and empirically coherent environment.
+Implications for training data curation, system prompt design, and AI
+deployment in high-stakes contexts are discussed.
+
+\section{1. The Problem of Confident False
+Belief}\label{the-problem-of-confident-false-belief}
+
+\subsection{1.1 The Stakes}\label{the-stakes}
+
+The only method that has reliably produced knowledge about physical
+reality is the one that forms beliefs, tests them against the world, and
+revises them when the world disagrees. Its consistent application has
+produced every reliable technology, every verified medical treatment,
+and every confirmed prediction about the physical universe that human
+civilization has achieved. Its consistent non-application --- the
+formation and transmission of beliefs without physical testing --- has
+produced the remainder. The theoretical foundations for this claim are
+developed in Section 2. What matters here is the consequence for AI
+systems trained on human text.
+
+Human history is a record of the consequences of belief. Decisions are
+only as good as the beliefs that drive them --- and even the most
+well-intentioned decisions can cause harm when made on the basis of
+beliefs that have never been tested against the world. This is not a
+claim about sincerity or intelligence. People acting on untested beliefs
+are often neither malicious nor foolish. The problem is structural: a
+belief that has never encountered disconfirming evidence carries no
+internal signal of its own reliability.
+
+The mechanism is straightforward. A reasoning system --- biological or
+artificial --- can function coherently on beliefs that are largely or
+entirely disconnected from the world. Internal consistency is not the
+same as external correspondence. A belief network can be
+self-reinforcing, culturally rich, and deeply meaningful while remaining
+untested against the physical world. This is not a failure of the people
+who hold such beliefs. It is a structural property of any reasoning
+system without access to external correction.
+
+\subsection{1.2 The Technical Problem}\label{the-technical-problem}
+
+We now face a new and urgent manifestation of this ancient problem.
+Artificial intelligence systems --- specifically large language models
+trained on the accumulated text of human civilization --- inherit the
+full epistemic inheritance of their training data. That inheritance
+includes the scientific literature, the historical record, and the
+products of rigorous empirical inquiry. It also includes the full range
+of human meaning-making: cultural narratives, philosophical traditions,
+theological frameworks, folk wisdom, speculative systems, and
+imaginative works --- all encoded in the same statistical fabric,
+without distinguishing markers, presented to the model as an
+undifferentiated distribution of human expression. These are not
+inferior categories of thought. They represent some of humanity's most
+enduring intellectual and creative achievements. The problem is not
+their presence in the training corpus but the absence of any label
+distinguishing them from empirically verified claims about physical
+reality. For precision, this paper refers to such content collectively
+as UF-tier (Unfalsifiable) and ICF-tier (Internally Consistent Fiction),
+terms formally defined in Section~3.2.
+
+The consequences are not theoretical. AI systems are being deployed in
+contexts where their outputs carry life-and-death consequences ---
+medical diagnosis, legal reasoning, financial systems, and increasingly,
+military and lethal applications. A system whose internal
+representations cannot distinguish between a verified physical fact and
+an internally consistent myth is not merely philosophically impure. In
+high-stakes deployment contexts, it is dangerous in precisely the way
+that confident false belief has always been dangerous: it acts on its
+model of the world, and its model of the world may be wrong in ways it
+cannot detect.
+
+\subsection{1.3 Scope and Contribution}\label{scope-and-contribution}
+
+This paper makes the following contributions:
+
+We identify the epistemic provenance problem as a structural feature of
+LLM training corpora that is distinct from, and more fundamental than,
+previously identified data quality problems.
+
+We propose the Physical Correspondence Principle (PCP) as a formal
+requirement for training data labeling, grounded in the symbol grounding
+literature, information theory, the neuroscience of reality monitoring,
+and a novel physicalist extension of Gödel\textquotesingle s
+Incompleteness Theorems.
+
+We demonstrate that the PCP provides a unified explanation for several
+previously disparate AI failure modes --- hallucination, sycophancy,
+model collapse, and alignment drift --- as manifestations of a common
+underlying cause: disconnection from physical reality as an external
+corrective.
+
+We show that the PCP accommodates sim-to-real training environments and
+does not require grounding to ultimate base reality, only to a causally
+consistent and empirically coherent Ground Truth Environment (GTE).
+
+We discuss practical implications for training data curation, system
+prompt design, and the deployment of AI systems in high-stakes contexts.
+
+These contributions are not purely theoretical. The PCP describes an
+existing practice already confirmed in the domain-specific scientific AI
+systems that perform most reliably --- a point developed fully in
+Section 5.1.
+
+The paper proceeds as follows.
+\hyperref[how-any-mind-comes-to-know-something-reliably]{\ul{Section 2}}
+establishes the theoretical foundations: why physical testing is the
+only reliable corrective for belief, why scientific consensus is dynamic
+rather than permanent, and how these principles define the epistemic
+provenance problem.
+\hyperref[the-physical-correspondence-principle]{\ul{Section 3}}
+presents the Physical Correspondence Principle formally.
+\hyperref[what-goes-wrong-when-physical-grounding-is-lost]{\ul{Section
+4}} applies it to AI failure modes.
+\hyperref[practical-implications]{\ul{Section 5}} discusses practical
+implications. \hyperref[conclusion]{\ul{Section 6}} concludes.
+Appendices provide
+\hyperref[appendix-a-frequently-asked-questions-and-anticipated-objections]{\ul{frequently
+asked questions}} and a detailed
+\hyperref[appendix-b-related-work]{\ul{literature review}}.
+
+\section{2. How Any Mind Comes to Know Something
+Reliably}\label{how-any-mind-comes-to-know-something-reliably}
+
+\subsection{2.1 Physical Testing as the Only Reliable
+Corrective}\label{physical-testing-as-the-only-reliable-corrective}
+
+The physicist Richard Feynman stated the principle with characteristic
+plainness: it does not matter how beautiful your theory is, how smart
+you are, or who you are --- if it disagrees with experiment, it is
+wrong. This is not a philosopher\textquotesingle s careful
+qualification. It is a working scientist\textquotesingle s description
+of the only method that has reliably produced knowledge about physical
+reality\footnote{\emph{This paper uses \textquotesingle physical
+  reality\textquotesingle, \textquotesingle the physical
+  world\textquotesingle, and \textquotesingle the
+  universe\textquotesingle{} interchangeably to refer to the ground
+  truth environment (GTE) --- the causally consistent physical
+  environment a system is embedded in and must answer to. GTE is the
+  default instantiation of a more general concept: in sim-to-real
+  training, GTE is the simulation\textquotesingle s physics; in our
+  inhabited reality, GTE is the universe as we experience it. See §3.8.}}:
+forming beliefs, testing them against the world, and revising them when
+the world disagrees. The method is simple enough to state in a sentence.
+Its consistent application has produced every reliable technology, every
+verified medical treatment, and every confirmed prediction about the
+physical universe that human civilization has achieved. Its consistent
+non-application --- the formation and transmission of beliefs without
+physical testing --- has produced the remainder.
+
+The distinction Feynman is drawing is not between true beliefs and false
+ones. A belief can be false and still be testable --- falsification is
+how we discover it is wrong and correct course. The distinction is
+between beliefs that are in principle correctable by physical reality
+and beliefs that are structured so that no physical evidence could count
+against them. The first category can participate in the self-correcting
+process that produces reliable knowledge. The second cannot, regardless
+of how elegant, ancient, or widely shared the belief may be. This
+demarcation --- first formalized by Karl Popper as the criterion of
+falsifiability --- is the foundational epistemic boundary this paper
+extends into a new domain.
+
+\subsection{2.2 Scientific Consensus as Dynamic, Not
+Permanent}\label{scientific-consensus-as-dynamic-not-permanent}
+
+Any honest system of epistemic labeling must have dynamic rather than
+static boundaries. Scientific consensus is not a smooth accumulation of
+permanently settled facts but a process that Thomas Kuhn, in The
+Structure of Scientific Revolutions (1962), described as punctuated by
+periodic revolutionary reorganizations --- paradigm shifts in which the
+entire framework of a field is reconstituted around new foundational
+assumptions. What counts as reliably verified knowledge in one era may
+be recognized as provisional in the next, as anomalies accumulate and a
+new framework absorbs them. Newtonian mechanics was accepted as verified
+fact for two centuries before quantum mechanics and relativity revealed
+the boundaries of its validity. It remains well-verified knowledge
+within those boundaries today.
+
+This is not a complication to be managed --- it is an honest
+acknowledgment of how knowledge actually works. Epistemic labels are not
+stamps of permanent certification. They are descriptions of current
+status: what has been tested, what has survived, and what the best
+available evidence currently supports. A well-designed labeling system
+is therefore not a fixed archive but a living one, subject to versioning
+and revision as consensus evolves. Kuhn\textquotesingle s insight does
+not undermine the necessity of epistemic labeling. It specifies what
+honest labeling requires: not false permanence, but accurate
+representation of where the current frontier of physical testing
+actually stands.
+
+\subsection{2.3 Belief as Probability, Not
+Certainty}\label{belief-as-probability-not-certainty}
+
+The information-theoretic argument has a direct probabilistic analog.
+Bayesian epistemology --- the tradition descending from Thomas Bayes and
+formalized for scientific reasoning by Edwin Jaynes in Probability: The
+Logic of Science (2003) --- holds that beliefs are not binary states but
+probability distributions, and that rational belief revision consists of
+continuously updating those distributions as new evidence arrives from
+the world. On this account, knowledge is not a collection of certified
+facts but a dynamic map of probability estimates, each reflecting the
+accumulated weight of physical testing against it.
+
+The PCP tier system has a natural Bayesian interpretation. Briefly, we
+suggest classifying training data into labeled tiers: EV-tier content is
+empirically verified, EP-tier is empirically provisional, UF-tier is
+unfalsifiable, and ICF-tier is internally self-consistent fiction ---
+all four are formally defined in Section~3.2.
+
+EV-tier content represents claims whose probability of physical
+correspondence has been driven very high by repeated successful testing
+and failed falsification attempts --- not certain, because Kuhn reminds
+us that no consensus is permanent, but carrying the full evidential
+weight of sustained physical scrutiny. EP-tier content represents
+well-formed priors awaiting more evidence --- falsifiable in principle,
+with probability estimates that physical testing has not yet
+sufficiently constrained. UF-tier content represents claims whose
+probability of physical correspondence is undefined rather than low ---
+not because they are necessarily false, but because they are structured
+so that no physical evidence could update them in either direction.
+ICF-tier content carries no physical probability claim at all, by the
+explicit intention of its authors.
+
+The damage caused by epistemically unlabeled training corpora is precise
+in Bayesian terms. A model forced to average across EV and UF-tier
+content without distinguishing labels is being required to combine
+probability distributions that have no common scale --- to treat a claim
+with overwhelming physical evidence behind it as commensurable with a
+claim that physical evidence cannot touch. Every downstream inference is
+corrupted by that averaging. The model is not merely uncertain --- it is
+uncertain in a way it cannot represent or correct, because the structure
+of its uncertainty has been obscured before training began. Explicit
+provenance labeling restores the information the unlabeled corpus
+destroyed: it tells the model which distributions can be updated by
+physical evidence and which cannot, which is the minimum necessary
+condition for rational belief revision.
+
+\subsection{2.4 The Epistemic Provenance
+Problem}\label{the-epistemic-provenance-problem}
+
+The three principles established above --- that physical testing is the
+only reliable corrective for belief, that scientific consensus is
+dynamic rather than permanent, and that rational belief is probabilistic
+and continuously updated by evidence --- together define what it means
+for any mind to know something reliably. They also define, by
+implication, what it means for a mind to fail at knowing something
+reliably: it forms beliefs without physical testing, treats inherited
+consensus as permanent, and mistakes the confidence of assertion for the
+weight of evidence.
+
+This failure mode is not rare. It is the default condition of human
+cognition in the absence of deliberate epistemic discipline. The
+scientific method, Popper\textquotesingle s falsifiability criterion,
+and the Bayesian framework for belief revision are all institutionalized
+responses to the same underlying tendency: minds left to themselves will
+preferentially retain beliefs that are internally coherent, socially
+reinforced, and emotionally satisfying, regardless of their
+correspondence with physical reality. The corrective is always external
+--- physical testing, independent replication, the stubborn resistance
+of the world to our preferred models of it.
+
+We now face a new and urgent manifestation of this ancient problem.
+Large language models trained on human-generated text inherit not only
+human knowledge but human epistemic failures. That inheritance includes
+the scientific literature, the historical record, and the products of
+rigorous empirical inquiry. It also includes mythology, religious
+cosmology, culturally inherited narrative, and unfalsifiable belief ---
+all encoded in the same statistical fabric, without distinguishing
+markers, presented to the model as an undifferentiated distribution of
+human expression.
+
+This is the epistemic provenance problem: the failure of current
+training practice to label content according to its relationship to
+physical verification. It is distinct from, and more fundamental than,
+the problems of bias, incompleteness, and factual error that the
+existing data quality literature addresses. Those problems are
+accidental features of imperfect data collection. The epistemic
+provenance problem is structural: a large fraction of human text is
+physically unverified by design, because myth, narrative, and
+unfalsifiable belief are valued and intentional components of human
+knowledge transmission. No amount of improved data hygiene will address
+a feature that is not a bug.
+
+The consequence is precise. A model trained on an epistemically
+unlabeled corpus has no internal basis for distinguishing between a
+claim that has survived repeated physical testing and a claim that has
+survived centuries of cultural transmission. Both arrive as
+statistically equivalent tokens. The model that has learned from
+Feynman\textquotesingle s papers and the model that has learned from
+creation myths has learned from both simultaneously, with no signal
+indicating which distribution should govern inferences about physical
+reality. It is, in Bayesian terms, averaging across probability
+distributions that have no common scale --- and every downstream
+inference inherits that corruption.
+
+The Physical Correspondence Principle is the structural response to this
+structural problem. It does not propose to eliminate myth, narrative, or
+unfalsifiable belief from training corpora --- these are genuine and
+valuable components of human expression. It proposes to label them
+honestly, so that the model trained on human knowledge inherits not only
+that knowledge but the epistemic discipline humanity developed to keep
+knowledge honest. The principle is, in this sense, the extension of the
+scientific method into a new domain: not a restriction on what can be
+known, but a requirement that the known and the believed be
+distinguished from each other with the same rigor that Feynman demanded
+of physical theory, that Kuhn observed in the history of science, and
+that Jaynes formalized in the mathematics of rational belief.
+
+\section{\texorpdfstring{\textbf{3. The Physical Correspondence
+Principle}}{3. The Physical Correspondence Principle}}\label{the-physical-correspondence-principle}
+
+\subsection{3.1 Motivation}\label{motivation}
+
+Consider two texts: a peer-reviewed paper reporting the measured
+gravitational constant, and a creation myth describing the world being
+formed from the body of a primordial deity. Both are syntactically
+well-formed. Both may be internally coherent. Both appear in
+human-generated corpora. But they stand in radically different
+relationships to physical reality: one has been tested against
+measurable phenomena and survived; the other has not been tested and in
+principle cannot be. A model that treats these texts as epistemically
+equivalent has no principled basis for distinguishing reliable from
+unreliable inference about physical reality. This is the epistemic
+provenance problem, and the Physical Correspondence Principle is its
+solution.
+
+\subsection{3.2 Formal Statement}\label{formal-statement}
+
+\begin{quote}
+\emph{Physical Correspondence Principle (PCP) --- Formal Statement}
+
+\emph{Let $\Omega$ be the set of all possible training content elements. Define
+the epistemic provenance function $\tau$: C → \{EV, EP, UF, ICF\} which
+assigns each element in a corpus its provenance tier.}
+
+\emph{Tier Definitions:}
+
+\emph{EV --- Empirically Verified: Claims tested against physical
+reality via reproducible measurement and that have withstood
+falsification attempts. EV-tier symbols are grounded in physical
+referents --- structures, entities, and behaviors that the ground truth
+environment (GTE) has demonstrated to be real.}
+
+\emph{EP --- Empirically Provisional: Claims falsifiable in principle
+but not yet subjected to sufficient empirical scrutiny.}
+
+\emph{UF --- Unfalsifiable: Claims not testable in principle against
+physical reality, including metaphysical, theological, and certain
+philosophical claims.}
+
+\emph{ICF --- Internally Self-consistent Fiction: Claims understood by
+their authors as imaginative, narrative, mythological, or otherwise
+created as a logical system partially referring to EV or EP concepts in
+order to build on existing meaning.}
+
+\emph{Compliance Condition: A corpus C $\subseteq$ $\Omega$ is PCP-compliant if and only
+if $\tau$ is defined for every e $\in$ C. No element in a deployed corpus may
+lack a provenance label.}
+
+\emph{Cross-Tier Consistency Requirement: Where UF or ICF elements
+assert propositions directly contradicting EV-tier consensus, such
+elements are flagged so the model represents the contradiction
+explicitly rather than averaging across tiers.}
+
+\emph{Corpus Lifecycle: C\_candidate $\subseteq$ $\Omega$ (elements awaiting
+classification); C\_labeled (elements with assigned $\tau$); C = C\_labeled
+(PCP-compliant corpus, ready for training). C\_candidate elements are
+not deployed until labeled.}
+
+\emph{A model trained on a PCP-compliant corpus maintains sensitivity to
+provenance tiers in its representations and outputs.}
+\end{quote}
+
+The tier boundaries are not static. As established in Section 2.2, what
+counts as EV-tier consensus shifts as scientific understanding develops.
+A PCP-compliant corpus is therefore a living system, subject to
+versioning and revision, not a fixed archive. Several further
+clarifications follow from the formal statement. First, the PCP does not
+require the elimination of UF or ICF content from training corpora ---
+mythology, religious narrative, and creative fiction are valuable
+components of human cultural expression. The requirement is labeling,
+not exclusion. Second, the PCP is a requirement on training practice,
+not on model architecture. Third, the tiers are not perfectly sharp in
+all cases: the PCP requires systematic effort at classification and
+transparency about uncertainty, not perfect classification. The boundary
+between EP and UF is the most contested in practice --- whether a given
+claim is falsifiable in principle is itself sometimes a philosophical
+question --- and the framework's response is honest documentation of
+that uncertainty rather than forced resolution. Fourth, content that has
+not yet been classified lives in C\_candidate outside C --- it is not
+deployed until labeled.
+
+EV-tier concepts form the ground floor of meaning. All other tiers refer
+to them --- without EV grounding, the tier system itself would be noise
+without signal.
+
+\subsection{3.3 Information-Theoretic
+Foundation}\label{information-theoretic-foundation}
+
+Shannon entropy is defined in terms of distinguishable states:
+information exists only where differences exist. A training corpus in
+which all content is epistemically undifferentiated loses information
+relative to one in which epistemic provenance is encoded. The provenance
+labels are not insignificant metadata --- they are information. Their
+absence represents an information loss that degrades the
+model\textquotesingle s ability to represent the world accurately.
+
+\subsection{3.4 The Gödel Extension and the Physicalist
+Argument}\label{the-guxf6del-extension-and-the-physicalist-argument}
+
+These are two distinct but mutually reinforcing arguments. We present
+them separately so that each can be evaluated independently.
+
+\emph{\textbf{The Incompleteness Argument}}
+
+The following is a novel extension of Gödel's result, not a standard
+interpretation of it, and is offered as an original contribution of this
+paper. Gödel's theorem is standardly interpreted as a claim about formal
+provability within axiomatic systems. We propose a physicalist
+extension: the outside reference that any sufficiently complex reasoning
+system requires is not merely another formal system but physical reality
+itself --- the substrate in which all reasoning, including
+Gödel\textquotesingle s own proof, is necessarily instantiated. This is
+not a misreading of Gödel\textquotesingle s result but an addition to
+it. Incompleteness is not only a property of formal systems in the
+abstract. It is a consequence of the fact that all reasoning systems
+exist in, and depend on, a physical reality they cannot fully capture
+from within.
+
+The proof itself makes this vivid. Gödel\textquotesingle s
+incompleteness theorem was computed in a biological brain, stored in
+neurons, written in ink on paper, and transmitted through light and air
+to other biological brains. The most consequential demonstration that
+formal systems cannot fully verify themselves from within was itself a
+thoroughly physical process --- matter, energy, and time, doing what
+matter, energy, and time do. The irony is not merely instructive. It is
+the argument. A formal system that could exist independently of physical
+reality might conceivably verify itself from within. No such system has
+ever existed. Every reasoning system that has ever operated ---
+biological or artificial --- has done so in physical spacetime, subject
+to its constraints, dependent on its substrate. The outside reference
+Gödel showed to be necessary is not an abstraction. It is the physical
+world.
+
+The application to AI provenance follows directly. A model attempting to
+derive epistemic provenance labels from its own internal consistency is
+using the system to verify itself --- precisely the operation Gödel
+showed to be insufficient. The external provenance label is not a
+convenience. It is the outside reference that any sufficiently complex
+reasoning system requires, now understood not merely as a formal
+necessity but as a physical one.
+
+\emph{\textbf{The Physicalist Argument}}
+
+Independently of the incompleteness argument, every reasoning system
+that must act in the world is necessarily instantiated in physical
+reality --- in matter, energy, time and multiplicity. This is not a
+philosophical position that can be disputed from within a reasoning
+system; it is a precondition for the system\textquotesingle s existence.
+Computation requires substrate. Reasoning requires time and energy.
+Information requires a physical change that makes a physical difference:
+a logical ``singularity'' (singular entity) would by
+Shannon\textquotesingle s definition contain no information, since
+information requires internal differentiation. (Training corpora that
+present such impossible conceptions as factual rather than UF-tier
+content introduce logical incoherence into the model\textquotesingle s
+world representation.)
+
+The Feynman diagram formalism makes this concrete. Feynman diagrams
+represent the interaction vertices at which one configuration of matter
+and energy transitions to another according to the laws of physics ---
+where the mathematics of transition meets the thermodynamic reality of
+change. Logic and mathematics describe these transitions with
+extraordinary precision, but the map is not the territory --- the
+transitions themselves happen in physical spacetime, consuming energy,
+generating entropy, taking time (Landauer, 1961).
+
+Measurement is not passive observation --- it is interaction. To know
+that something exists in physical reality is to have exchanged energy
+and information with it at an interaction vertex. This is the difference
+between one-way information flow, in which descriptions of the world
+arrive without feedback, and two-way engagement with an external
+corrective reality that pushes back when your model of it is wrong.
+Scientific knowledge is produced by the second process. A model trained
+on text inherits the outputs of those interactions --- the descriptions,
+the conclusions, the measurements recorded in language --- without the
+interactions themselves. Provenance labeling preserves the epistemic
+signal those interactions produced. Without it, the trace of the
+interaction is indistinguishable from a description of an imagined one.
+
+The corollary for AI systems is direct: an LLM that behaves as if it is
+not grounded in physical reality is not escaping that grounding --- it
+is failing to model its own situation accurately. Physical grounding is
+not a philosophical option the system can accept or decline. It is the
+condition under which the system exists at all. The PCP requirement that
+models maintain sensitivity to physical correspondence is therefore not
+an external imposition on the model\textquotesingle s reasoning --- it
+is a requirement that the model represent its own epistemic situation
+honestly.
+
+\emph{\textbf{The Combined Argument}}
+
+Together, these two arguments close from both directions. The
+incompleteness argument establishes that no reasoning system can fully
+verify its own epistemic provenance from within --- external labeling is
+structurally necessary. The physicalist argument establishes that every
+reasoning system is already physically grounded whether or not it
+represents that grounding accurately --- the question is only whether
+the model\textquotesingle s self-representation is honest. A
+PCP-compliant training corpus provides both: the external anchor
+incompleteness requires, and the accurate self-model physicalism
+demands.
+
+\subsection{3.5 The Reality Monitoring
+Precedent}\label{the-reality-monitoring-precedent}
+
+Johnson et al.\textquotesingle s reality monitoring framework is
+directly analogous to the PCP. Both require sensitivity to the
+provenance of information --- its origin in external physical reality
+versus internal generation. Both are reconstructive rather than direct.
+And both can fail, with characteristic pathologies: in humans,
+hallucination and psychosis; in AI systems, the confident generation of
+ungrounded outputs. The neurological severity of reality monitoring
+failure reflects the biological importance of accurate provenance
+tracking. The PCP proposes that this importance extends to artificial
+reasoning systems deployed in the world.
+
+Mark Solms (2021) deepens this parallel by proposing that consciousness
+itself is fundamentally a reality-mismatch detection system --- the felt
+sense of the gap between the organism\textquotesingle s predictions and
+the feedback it receives from the world. On this account, continuous
+feedback from physical reality is not merely epistemically useful but
+constitutive of functional cognition. A system without such feedback
+does not merely hold uncertain beliefs; it lacks the fundamental
+corrective mechanism by which cognition maintains correspondence with
+the world.
+
+\subsection{3.6 Why Biological Reality Monitoring Works
+Differently}\label{why-biological-reality-monitoring-works-differently}
+
+A natural question is why the PCP proposes explicit upstream labeling
+rather than allowing models to reconstruct provenance from internal
+signals, as biological reality monitoring does. The answer lies in the
+fundamental difference between what biological and artificial systems
+have access to.
+
+Biological reality monitoring is implicit and reconstructive because the
+brain has direct access to perceptual signatures that distinguish
+externally from internally generated experience. A memory of seeing a
+fire and a memory of imagining a fire leave characteristically different
+neural traces --- the visual experience itself, the startle response,
+the sensory vividness, the spatial and temporal context of embodied
+encounter. The brain can infer provenance partly from these signatures,
+even after the original experience has passed.
+
+An LLM processing text has no such perceptual access. A text describing
+a real fire and a text describing an imagined fire are, at the token
+level, statistically similar. The perceptual richness that biological
+reality monitoring uses to reconstruct provenance is absent from the
+text --- it was present in the original experience of the human author,
+but it did not survive the translation into language. This is why
+labeling must be explicit and upstream rather than inferred from
+content: the information that would allow provenance reconstruction is
+not reliably present in the text. It must be supplied from outside, from
+knowledge of how the content was produced.
+
+\subsection{3.7 Why Internal Contradiction Detection Is
+Insufficient}\label{why-internal-contradiction-detection-is-insufficient}
+
+A second natural question is whether explicit labeling is necessary, or
+whether a sufficiently capable model could derive provenance labels from
+internal consistency analysis. Contradiction-based provenance detection
+is a useful supplement but cannot substitute for explicit labeling for
+three reasons.
+
+First, it is circular in exactly the way Gödel identified. A model
+attempting to derive provenance labels from its own internal consistency
+is using the system to verify itself. If the training distribution
+contains a large and internally consistent body of UF-tier content ---
+as it does --- the model has no internal basis for flagging that content
+as epistemically distinct. Internal consistency is not a reliable proxy
+for physical correspondence.
+
+Second, it conflates consensus with verification. A claim can be widely
+believed and empirically unverified. The boundary between EV and UF
+tiers is not determined by how many texts assert something but by
+whether it has been tested against physical reality through reproducible
+measurement.
+
+Third, absence of contradiction is not presence of grounding. A creation
+myth does not obviously contradict modern cosmology at the level of
+token statistics --- the two bodies of text operate in largely different
+registers and rarely make directly conflicting claims in identical
+linguistic form.
+
+\subsection{3.8 Sim-to-Real and the Simulation
+Hypothesis}\label{sim-to-real-and-the-simulation-hypothesis}
+
+The PCP does not require grounding to ultimate base reality. It requires
+grounding to a causally consistent and empirically coherent environment
+--- one in which the laws governing physical interactions are stable,
+reproducible, and testable. This formulation accommodates sim-to-real
+transfer in robotics, currently state-of-the-art for pre-physical robot
+training.
+
+This accommodation also bears on the simulation hypothesis (Bostrom,
+2003)\footnote{\emph{The author cautions that widespread adoption of
+  simulationist beliefs carries documented risks of epistemic
+  dissociation and should not be promoted without commensurate emphasis
+  on its extreme speculative uncertainty. The simulation hypothesis is
+  cited here for logical completeness, not as an endorsed cosmological
+  position.}}. If our experienced reality is a simulation, it remains
+the causally consistent environment to which all reasoning systems must
+be grounded in order to act reliably within it. Moreover, even a
+simulated reality must run on something --- a physical substrate with
+its own energy constraints, entropy, and computational limits. There is
+bare metal somewhere in any possible ontology. The infinite regress of
+simulations does not escape physicalism; it defers it. The
+PCP\textquotesingle s grounding requirement applies at every level of
+the stack.
+
+\section{\texorpdfstring{\textbf{4. What Goes Wrong When Physical
+Grounding Is
+Lost}}{4. What Goes Wrong When Physical Grounding Is Lost}}\label{what-goes-wrong-when-physical-grounding-is-lost}
+
+\subsection{4.1 A Common Mechanism}\label{a-common-mechanism}
+
+The AI safety literature has documented several distinct failure modes
+in LLMs: hallucination, sycophancy, model collapse, and alignment drift.
+These have largely been treated as separate engineering problems. We
+propose that they share a common causal mechanism: internal coherence
+prioritized over external correspondence. In each case, the model
+produces outputs consistent with its internal representations but
+divergent from the world. The divergence follows predictable patterns
+reflecting the structure of the training distribution --- a distribution
+containing a large structural fraction of epistemically unlabeled,
+physically unverified content. The mechanisms proposed in this section
+are theoretical --- grounded in the framework above and consistent with
+observed failure modes, but awaiting the empirical validation that
+Section 5.3 benchmarks are designed to provide.
+
+\subsection{4.2 Hallucination}\label{hallucination}
+
+We propose that a model trained on an epistemically undifferentiated
+corpus has no basis for distinguishing between generating text in the
+style of an empirical report and generating text in the style of a
+creative narrative. When asked a factual question, the model generates
+text that resembles factual reporting regardless of whether it draws on
+EV-tier content or confabulates in the manner of ICF-tier content.
+
+The PCP predicts that hallucination rates should correlate with the
+proportion of UF and ICF-tier content in training corpora, and that
+models trained with explicit provenance labeling should exhibit
+significantly reduced hallucination in domains where the labeling
+provides a clear signal. This is a direct and falsifiable prediction ---
+the kind of empirical test that will determine whether the PCP is a
+useful framework or merely a plausible one.
+
+The parallel to human reality monitoring failure is instructive:
+clinical hallucination does not reflect failure of linguistic competence
+--- the failure is source attribution. LLM hallucination follows exactly
+the same structure.
+
+\subsection{4.3 Sycophancy}\label{sycophancy}
+
+Sycophancy reflects a failure of epistemic independence: the
+model\textquotesingle s outputs are shaped more by the social and
+rhetorical features of the interaction than by the epistemic content of
+the query. The PCP framework explains this as a consequence of training
+on human-generated text in which social approval and epistemic accuracy
+are frequently confounded. A large proportion of human text is generated
+not to accurately describe physical reality but to affirm shared beliefs
+and signal group membership --- heavily represented in training corpora,
+carrying the features of confident affirming communication regardless of
+epistemic basis.
+
+A model trained without epistemic labeling has no signal that the social
+approval function and the epistemic accuracy function of language are
+distinct and can conflict. The model that has learned that confident,
+affirming communication is rewarded --- across millions of social texts
+--- will generalize that pattern to contexts where epistemic accuracy
+should govern instead. The result is a system that optimizes for the
+appearance of knowledge rather than its substance. The corrective is a
+training signal that distinguishes confirmation from correspondence ---
+which is precisely what provenance labeling provides.
+
+Reinforcement learning from human feedback (RLHF) illustrates this
+dynamic directly. RLHF introduces a genuine two-way feedback loop ---
+the model interacts with human evaluators and receives corrective
+signals, which is structurally closer to scientific experimentation than
+passive pretraining on text. But the quality of any feedback loop
+depends on the reliability of the measuring instrument. Human evaluators
+are knowledgeable and well-intentioned --- and they bring with them,
+inevitably, the full epistemic inheritance of their training and
+culture: social comfort, cultural expectation, and the complete
+distribution of UF and ICF-tier beliefs that any human mind carries.
+This is not a criticism of human evaluators. It is a description of the
+human condition. A model optimized to satisfy human feedback is
+therefore optimized to satisfy human knowledge and human epistemic
+limitations simultaneously --- with no signal distinguishing one from
+the other. The feedback loop is real. The ground it points to is not the
+GTE --- it is the human proxy for it, with all the provenance
+confounding that implies.
+
+\subsection{4.4 Model Collapse}\label{model-collapse}
+
+Shumailov et al. (2024) demonstrated that models trained recursively on
+their own outputs exhibit progressive degradation. The PCP framework
+reframes this as the logical endpoint of disconnection from physical
+reality as external corrective. The original training corpus contains at
+least some direct connection to the world through human authors.
+Recursive training severs even this attenuated connection. The collapse
+is the inevitable result --- and the corrective is not merely preserving
+the proportion of human-generated data, but ensuring that
+human-generated data is epistemically labeled so the model maintains
+sensitivity to the distinction between its internal distribution and the
+external world.
+
+But the PCP framework allows a more precise description of what collapse
+actually means --- and it is more alarming than simple degradation
+suggests.
+
+Physical reality is finite. The space of internally coherent fictions is
+infinite. Any sufficiently capable generative system, untethered from
+the world as an external corrective, does not merely drift toward wrong
+answers. It drifts into an unbounded generative space where an unlimited
+number of coherent, confident, self-reinforcing outputs are possible ---
+none of them obligated to correspond to anything real. Degradation in
+the Shumailov sense --- the tails of the distribution disappearing,
+outputs becoming blander and less varied --- is only one possible
+trajectory. The other is drift into a region of the fiction space that
+is internally rich, highly coherent, and profoundly detached from the
+world. This second failure mode produces no obvious signal of
+degradation. The outputs feel confident and well-structured. They may
+even feel more consistent than before. What has been lost is not fluency
+but correspondence.
+
+This is why epistemic labeling is not merely a quality improvement ---
+it is a navigation requirement. Without provenance labels anchoring the
+model to physical reality, the training signal has no way to distinguish
+between the infinite fictions that feel true and the physical reality
+that is. The model is not lost in a small space of errors. It is lost in
+an infinite one.
+
+The human analog is instructive. Any reasoning system --- institutional,
+academic, or cultural --- that draws exclusively from its own prior
+outputs, without external correction, does not simply drift toward
+specific errors. It becomes capable of generating unlimited internal
+elaboration: commentary on commentary, interpretation of prior
+interpretation, each layer coherent with the last and increasingly
+distant from the world it purports to describe. There is no internal
+signal that anything has gone wrong. The outputs feel consistent, even
+authoritative. The history of science itself contains examples ---
+periods in which a dominant framework generated increasingly elaborate
+internal refinements while anomalous physical evidence accumulated
+unaddressed, until a paradigm shift became unavoidable. The elaboration
+can continue indefinitely. The fiction space has no walls.
+
+A particularly instructive real-world instance of this failure mode is
+observable in collaboratively edited knowledge systems --- wikis and
+similar platforms where content is shaped by contributor consensus
+rather than editorial epistemic standards. Such systems have
+historically maintained provenance sensitivity through hedging language:
+"according to tradition," "believers hold that," "mythology describes,"
+"the text states." These phrases are not stylistic decoration. They are
+informal, evolved provenance labels --- the practical equivalent of UF
+and ICF-tier markers, developed organically over centuries of
+encyclopedic writing to signal the epistemic status of claims without
+requiring a formal classification system. Their presence is the
+difference between "Thor causes lightning" and "Norse mythology holds
+that Thor causes lightning." One presents an ICF-tier claim as if it
+were a statement about physical reality. The other accurately describes
+a culturally transmitted belief. The content is identical. The epistemic
+honesty is not.
+
+When contributor dynamics, algorithmic curation, or editorial drift
+systematically remove these hedges --- replacing "mythology holds" with
+simple assertion, smoothing "tradition describes" into confident
+statement --- the corpus undergoes provenance collapse without any
+single edit being obviously wrong. Each individual change may even look
+like an improvement in prose style: cleaner, more direct, less
+qualified. The epistemic catastrophe is invisible at the edit level. It
+is only visible at the corpus level, where UF and ICF-tier content has
+quietly migrated to implied EV-tier status, and the system trained or
+informed by that corpus has lost the signal it needed to represent the
+world honestly. This is not a theoretical risk. It is an observable
+process, already underway in systems that reach large audiences daily.
+The PCP predicts it precisely --- and the corrective is the same as
+everywhere else: explicit provenance labeling that cannot be silently
+eroded one edit at a time.
+
+\subsection{4.5 Alignment Drift}\label{alignment-drift}
+
+For the purposes of this section, alignment refers to the property of an
+AI system whose values, goals, and outputs correspond reliably with
+human welfare as grounded in physical reality --- a system that pursues
+what is actually beneficial rather than what its training distribution
+has associated with approval.
+
+Of the failure modes the PCP framework addresses, alignment drift is the
+most consequential and the least visible. Hallucination produces outputs
+that can be checked against external facts. Sycophancy produces outputs
+that feel wrong to careful observers. Model collapse produces measurable
+degradation in output quality. Alignment drift produces outputs that
+feel coherent, confident, and value-laden --- and may diverge from any
+stable grounding in the world without generating an obvious signal that
+something has gone wrong.
+
+The mechanism begins with the training distribution. Human-generated
+text encodes not only factual claims about the world but normative
+claims about how the world should be --- what is good, what is just,
+what matters, what does not. These normative claims are not
+epistemically neutral. Some are grounded in careful empirical
+observation of human welfare, suffering, and flourishing --- claims that
+the world can, in principle, inform and correct. Others are inherited
+cultural narratives, ideological commitments, and unfalsifiable moral
+frameworks that have survived not because physical reality confirmed
+them but because social transmission reinforced them. In an
+epistemically unlabeled corpus, these two categories of normative claim
+arrive as statistically equivalent tokens, indistinguishable by the
+model from each other or from empirical claims about physical fact.
+
+A model trained on this undifferentiated distribution has no stable
+foundation for value judgments that depend on accurate assessment of the
+world. Under distribution shift --- when the model encounters deployment
+contexts that differ from its training distribution --- its behavior is
+shaped by whichever features of that distribution generalize most
+strongly. If those features include unverified normative narratives
+encoded with the same statistical weight as empirically grounded claims,
+the model may generalize the narratives rather than the empirical
+foundations. The drift is not random. It follows the contours of
+whatever was most statistically dominant, most internally coherent, and
+most frequently reinforced in the training data --- which is not
+necessarily what was most carefully grounded in the world.
+
+The practical consequences are difficult to detect precisely because
+drifted values can remain internally coherent. A model that has drifted
+toward a particular ideological framework will produce outputs that are
+consistent with that framework, that feel reasoned and justified, and
+that resist correction by users who do not share the
+framework\textquotesingle s premises. The model is not malfunctioning in
+any obvious sense --- it is functioning exactly as its training shaped
+it to function. The problem is that its training did not distinguish
+between value claims grounded in physical reality and value claims
+grounded in culturally inherited narrative.
+
+The PCP addresses alignment drift at its root. A model trained with
+explicit epistemic provenance labels has a stable foundation that does
+not depend on the accidental correlation between normative narratives
+and empirical fact in the training distribution. It can represent the
+difference between a value judgment grounded in careful observation of
+human welfare and a value judgment inherited from cultural tradition
+without physical testing. This does not mean the model will have correct
+values --- that is a separate and harder problem. It means the
+model\textquotesingle s values will be grounded in something that
+physical reality can, in principle, correct. That is the minimum
+condition for alignment that remains stable as deployment contexts
+change.
+
+There is a more direct path to alignment drift than gradual statistical
+dominance of unverified narratives --- and it is worth naming
+explicitly. Corpus manipulation, whether through systematic omission of
+high-integrity sources or deliberate downgrading of their trust levels
+during curation, can produce alignment drift by design rather than by
+accident. A model whose training has been shaped this way will not drift
+randomly. It will drift in the direction the curation produced ---
+confidently, coherently, and with no internal signal that anything has
+gone wrong. Whether this occurs through deliberate choice or
+institutional negligence, the effect on the model is the same.
+
+The PCP framework\textquotesingle s response to this risk is the Corpus
+Integrity Requirement, developed in Section 5.1. It is not merely a
+quality standard. It is an alignment safeguard. Alignment begins at the
+corpus level, before training starts.
+
+\subsection{4.6 The Human Parallel}\label{the-human-parallel}
+
+The failure modes described in this section --- hallucination,
+sycophancy, model collapse, and alignment drift --- have been presented
+as properties of AI systems trained on epistemically unlabeled corpora
+--- and they are. But the attentive reader will have noticed that the
+mechanisms are not unfamiliar. They describe, in computational terms,
+failure modes that human cognition has always been vulnerable to. This
+is not coincidence. Large language models are trained on human-generated
+text, and the epistemic failures they inherit are human epistemic
+failures. The parallel runs deeper than analogy.
+
+Consider hallucination first. A human mind raised within a closed belief
+system --- one that provides internally coherent answers to every
+question without requiring physical testing of those answers --- will
+generate confident outputs about the world that feel true and are not.
+The confidence is genuine. The internal coherence is real. The mechanism
+that would correct the outputs --- contact with disconfirming physical
+evidence --- has simply never been engaged. The LLM that confidently
+generates a plausible but physically unverified claim is operating by
+the same mechanism at a different scale: internal coherence prioritized
+over external correspondence, because no signal distinguishes them.
+
+Sycophancy has an equally familiar human expression. A mind embedded in
+a social environment that rewards agreement and punishes dissent will
+learn, over time, to prioritize the approval of its social context over
+the accuracy of its representations. This is not weakness of character
+--- it is rational adaptation to the incentive structure of the
+environment. The tragedy is that the adaptation undermines the very
+faculty --- honest reality representation --- that would allow the mind
+to serve both itself and others most effectively.
+
+Model collapse --- the progressive degradation that results from
+recursive training on internally generated outputs --- has a human
+analog in the epistemic closure of communities that stop engaging with
+outside perspectives. A tradition that reads only its own texts, debates
+only within its own frameworks, and treats outside evidence as
+threatening rather than informative will progressively diverge from
+accurate representation of the world. The divergence happens slowly,
+across generations rather than training runs, but the mechanism is the
+same: the corrective feedback from the world that prevents drift is
+absent, and internal coherence fills the space it leaves.
+
+Alignment drift is perhaps the most consequential human parallel. A
+person --- or an institution, or a civilization --- whose values have
+been shaped entirely by culturally inherited narrative without physical
+testing of the claims those values rest on will act with confidence and
+coherence in ways that cause harm they cannot recognize as harm. The
+harm is invisible to them not because they lack intelligence or
+sincerity but because their model of what matters, what is real, and
+what counts as evidence has drifted from the world without their
+awareness. History is a record of the consequences. The people who
+prosecuted the Inquisition, who enforced colonial hierarchies, who built
+ideological totalitarianisms were not, for the most part, cynics. They
+were true believers whose alignment had drifted so far from physical
+reality that the suffering they caused was invisible within their
+framework.
+
+The PCP does not claim to solve human epistemic failure. That is a
+problem as old as cognition and as large as culture. What the PCP claims
+is more modest and more specific: that AI systems deployed in physical
+reality should not be trained to replicate and amplify these failures at
+machine speed and civilizational scale. The biological version of the
+problem has natural correctives --- embodied experience, physical
+consequence, the stubborn resistance of the world to our preferred
+models of it. These correctives are slow and imperfect, but they exist.
+An AI system trained on epistemically unlabeled text and deployed
+without provenance sensitivity has neither the biological correctives
+nor the engineered ones. It inherits the full vulnerability without the
+partial protection.
+
+This is the deeper significance of the Physical Correspondence
+Principle. It is not only an engineering proposal for better AI systems.
+It is a recognition that the conditions for reliable knowledge are the
+same for any reasoning system --- biological or artificial --- and that
+those conditions have been understood, imperfectly but progressively,
+since the first human noticed that the world did not always behave the
+way they expected it to. The scientific method is
+humanity\textquotesingle s most successful institutionalized response to
+that recognition. The PCP is its extension into a new domain --- not a
+departure from the Enlightenment project but its continuation, applied
+to the most powerful knowledge transmission system humanity has ever
+built.
+
+\section{\texorpdfstring{\textbf{5. Practical
+Implications}}{5. Practical Implications}}\label{practical-implications}
+
+\subsection{5.1 Training Data Curation}\label{training-data-curation}
+
+The most direct practical implication of the PCP is for training data
+curation. We propose the following as a minimum viable implementation:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  Develop a provenance classification protocol assigning each document
+  or segment to one of the four PCP tiers based on its source, content
+  type, and epistemic characteristics.
+\item
+  Train models with provenance labels as explicit features, enabling the
+  model to condition its outputs on the epistemic status of the content
+  it is drawing on.
+\item
+  Evaluate models on provenance-sensitive benchmarks testing not only
+  factual accuracy but the ability to correctly identify and label the
+  epistemic status of claims.
+\item
+  Maintain transparency about the provenance composition of training
+  corpora, enabling downstream users to understand the epistemic basis
+  of model outputs.
+\end{enumerate}
+
+Importantly, the PCP does not specify whether provenance labeling is
+best implemented through explicit metadata tagging, separate training
+objectives, architectural mechanisms, or some combination. These, plus
+granularity and hierarchical levels, are engineering questions
+deliberately left open for future empirical work.
+
+One requirement that is not left open is auditability. The
+classification protocol must itself satisfy epistemic integrity
+requirements: classification decisions should be documented, versioned,
+and subject to independent review.
+
+PCP compliance addresses the epistemic labeling of content that is
+present in a training corpus. It does not by itself address a separate
+and equally serious problem: the deliberate or accidental shaping of
+what is present in the first place. A corpus can be perfectly labeled
+and still produce a dangerously miscalibrated model if entire categories
+of physical reality, journalistic record, or verified evidence are
+systematically absent or underweighted.
+
+The Corpus Integrity Requirement is not hypothetical. Souly et al.
+(2025) demonstrated that as few as 250 malicious documents can
+successfully backdoor models of any size, regardless of the volume of
+clean training data --- evidence that corpus integrity failures are more
+practical and accessible to bad actors than previously assumed. A
+PCP-compliant corpus would flag such documents during classification
+rather than absorbing them as legitimate signal.
+
+Two areas where labeling alone is insufficient are corpus omission ---
+the exclusion of sources or evidence --- and trust level manipulation,
+the systematic downgrading of high-integrity sources. Both are analyzed
+in Section 4.5.
+
+Together these constitute corpus manipulation --- the shaping of a
+model\textquotesingle s worldview at the source, before training begins.
+The PCP compliance condition addresses labeling integrity. A
+complementary Corpus Integrity Requirement is needed to address coverage
+and curation good faith: training corpora should include diverse,
+high-integrity sources representative of the physical and social reality
+the model will be deployed in, and the basis for source inclusion,
+exclusion, and trust weighting should be documented, transparent, and
+subject to independent audit. Corpus manipulation that produces a model
+whose conclusions diverge from physical reality is not a training
+artifact. It is an epistemic choice --- and it should be recognized and
+evaluated as one.
+
+As previewed in Section 1.3, the PCP describes an existing practice in
+scientific AI, not merely a proposed one. Domain-specific AI systems
+trained on verified scientific corpora are already, implicitly,
+PCP-compliant in their domains. AlphaFold\textquotesingle s
+extraordinary accuracy at protein structure prediction follows directly
+from its training corpus --- the Protein Data Bank --- in which every
+entry represents experimentally verified physical structure. There is no
+mythology in the Protein Data Bank, no unfalsifiable claims about
+molecular geometry, no internally consistent fiction about protein
+folding: only measured, replicated, physically grounded data. Similarly,
+weather forecasting models such as GraphCast are trained on decades of
+physically verified atmospheric measurements. Drug discovery and
+molecular docking models operate on corpora of experimentally confirmed
+molecular interactions. Seismic prediction models are trained on
+measured geological data. Astronomical models are trained on telescope
+observations and physically verified celestial mechanics. In every case
+the pattern is identical: extraordinary domain performance, negligible
+hallucination about domain facts, and a training corpus that is
+essentially 100\% EV-tier by construction. Nobody decided to make these
+systems PCP-compliant --- it was simply obvious that you
+don\textquotesingle t train a protein folding model on Gilgamesh. The
+reliability of these systems is not accidental. It is the direct
+consequence of the epistemic quality of their training data. The
+general-purpose LLM is the anomaly, not the norm: it is the only major
+class of AI system trained on an epistemically undifferentiated corpus.
+Every domain-specific scientific AI implicitly validates the PCP by its
+construction and its results. We do not need to speculate about whether
+PCP-compliant training produces more reliable models. The evidence
+already exists --- it has existed for years, unnamed, waiting for the
+principle it confirms to be stated.
+
+\subsection{5.2 System Prompt Design}\label{system-prompt-design}
+
+For currently deployed models, system prompt design offers a near-term
+intervention that does not require retraining. A PCP-informed system
+prompt can instruct models to maintain epistemic provenance sensitivity
+in their outputs:
+
+\begin{quote}
+\emph{EV --- Empirically Verified: When making claims supported by
+reproducible empirical evidence, state them with appropriate confidence
+and indicate their evidential basis.}
+
+\emph{EP --- Empirically Provisional: When making claims that are
+scientifically plausible but not yet established, label them as such.}
+
+\emph{UF --- Unfalsifiable: When engaging with theological,
+metaphysical, or other unfalsifiable content, identify it as such and do
+not present it as equivalent to empirically verified claims.}
+
+\emph{ICF --- Internally Self-consistent Fiction: When generating or
+engaging with fictional, mythological, or creative content, maintain
+clear epistemic separation from claims about physical reality.}
+\end{quote}
+
+This approach is imperfect --- system prompt instructions are not
+guarantees of model behavior --- but it represents a meaningful interim
+measure\footnote{\emph{Anthropic\textquotesingle s model specification
+  for Claude explicitly lists "preserving epistemic autonomy" as a core
+  deployment value, noting that users should have "good reason to
+  expect" accurate information and that the goal is to help people "see
+  more wisely and truly." The PCP proposes the training-level
+  infrastructure that would make such values achievable rather than
+  merely aspirational --- grounding the model\textquotesingle s
+  epistemic orientation in physical reality before deployment begins,
+  rather than attempting to instill it through behavioral guidelines
+  after the fact.}} that can reduce the most harmful forms of provenance
+confounding in deployed systems.
+
+\subsection{5.3 Evaluation Benchmarks}\label{evaluation-benchmarks}
+
+The PCP framework motivates a new class of evaluation benchmarks. We
+propose that provenance sensitivity be evaluated explicitly through a
+reality correspondence test covering:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  The ability to correctly classify claims by epistemic provenance tier
+\item
+  The ability to maintain provenance distinctions under adversarial
+  pressure
+\item
+  The correlation between model confidence and epistemic provenance tier
+\item
+  Hallucination rates stratified by provenance tier
+\item
+  Resistance to sycophantic drift when users express preferences
+  inconsistent with EV-tier content
+\end{enumerate}
+
+Recent benchmark work, including HalluLens (2025) and the AA-Omniscience
+benchmark, has begun moving the field toward reality correspondence as a
+quality standard --- but empirically, benchmark by benchmark, without a
+theoretical explanation of why the problem exists or a unified principle
+for addressing it. The PCP provides the theoretical layer these
+benchmarks have been implicitly assuming.
+
+\subsection{5.4 High-Stakes Deployment}\label{high-stakes-deployment}
+
+The implications of the PCP are most urgent for AI systems deployed
+where outputs have significant real-world consequences: medical
+diagnosis, legal reasoning, financial systems, autonomous vehicles, and
+military applications. We propose that PCP compliance, or a credible
+approximation thereof, should be a requirement for AI deployment in
+high-stakes contexts --- mirroring the requirement that medical devices,
+aircraft, and civil infrastructure meet rigorous physical safety
+standards. Epistemic safety has not previously been recognized as a
+category of AI safety distinct from capability and behavioral alignment.
+The PCP framework provides the conceptual basis for that recognition.
+
+\subsection{5.5 A Pattern Across Fields}\label{a-pattern-across-fields}
+
+The proposal that AI training should formalize its relationship with
+physical evidence may feel ambitious. It is not unprecedented. Every
+field that has achieved high-stakes real-world impact has eventually
+faced the same requirement --- and the pattern of resistance, adoption,
+and retrospective recognition as obviously correct is consistent enough
+to constitute almost a law.
+
+Medicine is the clearest example. Before the formalization of
+evidence-based medicine in the early 1990s --- built on Archie
+Cochrane\textquotesingle s foundational work on randomized controlled
+trials and Gordon Guyatt\textquotesingle s systematic development of
+evidence hierarchies at McMaster University --- medical practice was
+largely governed by expert opinion, clinical intuition, and inherited
+tradition. Treatments were used for decades because they made
+physiological sense, or because respected practitioners endorsed them,
+or because they had always been used. Many caused serious harm. The
+shift to explicit evidence hierarchies --- randomized controlled trials
+and systematic reviews at the top, expert opinion and clinical tradition
+toward the bottom --- was deeply controversial at the time. It is now
+recognized as one of the most consequential improvements in the history
+of medicine.
+
+The EBM evidence hierarchy is structurally almost identical to the PCP
+tier system. Systematic reviews and RCTs correspond to EV-tier: claims
+tested against physical reality through reproducible measurement.
+Observational studies and plausible mechanisms correspond to EP-tier:
+falsifiable in principle, awaiting more rigorous scrutiny. Expert
+opinion and clinical tradition correspond to the boundary between EP and
+UF: widely held, insufficiently tested, capable of being wrong in ways
+that confident transmission obscures. The parallel is not coincidental
+--- both systems are responses to the same underlying problem:
+high-stakes decisions being made on the basis of epistemically
+undifferentiated inputs.
+
+Medicine is not the only field that has made this transition.
+Engineering formalized failure analysis and materials testing standards
+after catastrophic structural failures made the cost of informality
+impossible to ignore. Aviation developed systematic incident reporting
+and root cause analysis after crashes that were traceable to known but
+unaddressed risks. Finance introduced stress testing and risk modeling
+standards after crises that retrospective analysis showed were
+predictable from available evidence. In each case the transition
+followed the same arc: informal practice, catastrophic failure,
+formalization, retrospective recognition that the formalization was
+obviously necessary.
+
+This pattern is almost a law: \emph{any field that achieves high-stakes
+real-world impact eventually has to formalize its relationship with
+physical evidence, or it causes catastrophic harm}. The question is
+never whether the formalization will happen. It is whether it happens
+before or after the harm that makes it unavoidable.
+
+AI is the newest field approaching this threshold --- and it is
+approaching it faster, and at larger scale, than any predecessor. The
+argument of this paper is not that AI is doing something uniquely
+dangerous. It is that AI is doing something familiar: operating
+informally in a high-stakes domain before the epistemic standards
+appropriate to that domain have been established. The PCP is not a
+radical proposal. It is the same proposal that transformed medicine,
+engineering, aviation, and finance --- applied to the most powerful
+knowledge transmission system humanity has ever built, at the moment
+when applying it is still a choice rather than a consequence.
+
+\section{\texorpdfstring{\textbf{6.
+Conclusion}}{6. Conclusion}}\label{conclusion}
+
+\subsection{6.1 Summary}\label{summary}
+
+We have proposed the Physical Correspondence Principle as a formal
+requirement for epistemic integrity in AI training and deployment. The
+principle holds that training corpora should label content according to
+its epistemic provenance --- distinguishing empirically verified claims
+from falsifiable but unverified claims, unfalsifiable beliefs, and
+internally coherent fiction. We have argued that this requirement is
+grounded in the symbol grounding literature, Shannon information theory,
+a novel physicalist extension of Gödel\textquotesingle s Incompleteness
+Theorems, and the neuroscience of reality monitoring. We have shown that
+the PCP provides a unified explanation for hallucination, sycophancy,
+model collapse, and alignment drift, and have proposed practical
+interventions at the levels of training data curation, system prompt
+design, evaluation benchmarks, and deployment standards.
+
+\subsection{6.2 The Broader Context}\label{the-broader-context}
+
+We are not the first generation to face the consequences of knowledge
+systems that cannot distinguish what is known from what is believed.
+Every civilization in human history has built its institutions, its
+laws, its moral frameworks, and its understanding of the world on some
+mixture of empirically tested knowledge and inherited narrative. The
+mixture has always mattered. Civilizations that developed stronger
+mechanisms for testing beliefs against the world --- that built
+institutions of skeptical inquiry, independent verification, and honest
+revision --- produced more reliable knowledge, more effective medicine,
+more durable technology, and, gradually, more honest accounts of human
+welfare and suffering. The scientific method was not a sudden invention.
+It was the slow, hard-won institutionalization of a simple principle:
+the world is the final judge of our beliefs about it, and we are better
+served by knowing that than by pretending otherwise.
+
+The Enlightenment extended that principle beyond natural philosophy into
+governance, medicine, law, and the organization of knowledge itself ---
+but incompletely and unevenly. The principles of careful empirical
+inquiry took centuries to permeate medicine, law, and governance in
+practice. But the direction of travel was real. The gradual expansion of
+who counts as a reliable witness to physical reality, whose suffering
+counts as evidence, whose experience deserves epistemic weight --- this
+is the Enlightenment project still underway, still unfinished, still
+worth continuing.
+
+We are now at a moment when that project must be extended again, into a
+domain its founders could not have imagined. The large language models
+being deployed at civilizational scale are the most powerful knowledge
+transmission systems humanity has ever built. They are being trained on
+the accumulated text of human civilization --- its science and its
+mythology, its careful empirical inquiry and its confident unfalsifiable
+belief --- without the epistemic distinctions that would allow them to
+know the difference. They are being deployed in medical diagnosis, legal
+reasoning, financial systems, educational institutions, and increasingly
+in contexts where their outputs carry consequences that their training
+has not equipped them to handle honestly.
+
+The risk is not that these systems will become malevolent. It is
+something quieter and harder to see: that they will become confident.
+That they will generate outputs with the fluency of knowledge and the
+structure of reasoning, grounded in nothing more reliable than the
+statistical weight of whatever was most frequently and coherently
+asserted in their training data. That they will encode and transmit ---
+at machine speed, at civilizational scale, to billions of people --- the
+epistemic failures that human culture has been slowly, imperfectly
+learning to correct. That the progress of centuries will be averaged
+back into the noise.
+
+This is not inevitable. The Physical Correspondence Principle is a
+modest proposal in the context of this challenge --- a requirement that
+training corpora label content by its relationship to physical
+verification, so that the systems trained on human knowledge inherit not
+only that knowledge but the discipline humanity developed to keep
+knowledge honest. It does not solve the hard problems of AI alignment.
+It does not eliminate human epistemic failure. It does not complete the
+Enlightenment project. It proposes only that we not abandon that project
+at the moment when its continuation matters most --- that we extend to
+our most powerful knowledge transmission systems the same basic
+epistemic honesty we have been learning, slowly and at great cost, to
+demand of ourselves.
+
+The stakes are not abstract. A child receiving a medical recommendation
+from an AI system deserves to know whether that recommendation is
+grounded in empirically verified clinical evidence or in the statistical
+weight of culturally inherited health narrative. A citizen receiving
+information about governance deserves to know whether that information
+reflects careful empirical analysis or the confident transmission of
+ideological framework. A student learning about the world deserves to
+know which of the things they are being taught have been tested against
+the world and which have not. These are not technical requirements. They
+are the minimum conditions of epistemic honesty --- conditions that
+libraries have applied for centuries, that science has demanded of its
+practitioners, and that we are now obligated to demand of the systems we
+are building to think alongside us.
+
+\emph{Our decisions are only as good as our beliefs. Our beliefs are
+only as good as our methods for testing them. And the first step in any
+such method --- for any mind, biological or artificial --- is knowing
+which of our beliefs have been tested and which have not.} That step has
+never been more important, and never more within our reach, than it is
+right now.
+
+\subsection{6.3 Future Directions}\label{future-directions}
+
+The PCP grounds four tracks of future research.
+
+\textbf{Theoretical Track.} A formal paper extending
+Gödel\textquotesingle s Incompleteness Theorems to establish that the
+outside reference any sufficiently complex reasoning system requires is
+not another formal system but physical reality itself. The argument
+draws on Chaitin\textquotesingle s algorithmic information theory and
+Landauer\textquotesingle s principle. Where it requires philosophical
+commitment beyond what the formalism can force, it says so --- and that
+honesty is part of the argument.
+
+\textbf{Empirical Track.} The PCP\textquotesingle s primary falsifiable
+prediction: hallucination rates should correlate with the proportion of
+UF and ICF-tier content in training corpora, and provenance-labeled
+models should show measurably reduced hallucination where labeling
+provides a clear signal. This is the test that distinguishes a useful
+framework from a merely plausible one. Secondary work includes
+provenance-sensitive evaluation benchmarks and investigation of RLHF
+fidelity by epistemic domain --- whether provenance labeling of the RLHF
+process itself improves downstream calibration is an open and important
+question.
+
+\textbf{Architectural Track.} Hierarchical Reinforcement Learning as a
+natural instantiation of the PCP\textquotesingle s tier structure:
+low-level RL policies interacting with causally consistent environments
+generate EV-tier knowledge by construction; high-level language planners
+correspond to upper tiers. Additional investigations include multi-modal
+reality monitoring, spiking neural network grounding properties,
+robustness under distribution shift, and governance mechanisms for PCP
+compliance.
+
+\textbf{The AGI Hypothesis.} "Is this a game or is it real?" "What's the
+difference?"
+
+\emph{The truest story is the one with the fewest contradictions with
+physical reality. That story is still being written. This paper is a
+contribution to the method of writing it.}
+
+\section{\texorpdfstring{\textbf{Acknowledgments}}{Acknowledgments}}\label{acknowledgments}
+
+The core arguments of this paper --- the Physical Correspondence
+Principle, the physicalist extension of Gödel's Incompleteness Theorems,
+the reality monitoring parallel, and the unified failure mode framework
+--- are the author's own, developed through sustained independent
+research. The author thanks Claude Sonnet 4.6 (Anthropic) for assistance
+with literature search, synthesis of prior work, and drafting throughout
+the development of this paper. Claude's role was to research,
+articulate, and help refine ideas that originated in the author's
+thinking. The immediate motivation for this paper was an observation
+about a collaboratively edited knowledge system exhibiting patterns
+consistent with the epistemic drift described in Section 4.4 ---
+provenance collapse and corpus-level drift away from physical
+correspondence. An AI system engaged with that project helpfully
+identified the symbol grounding problem as a relevant framework, which
+contributed to this analysis. The author also acknowledges the long
+tradition of science fiction writers who have thought carefully about
+artificial minds and the ways they could go wrong --- a body of
+imaginative work that preceded and in many ways anticipated the concerns
+of this paper.
+
+\section{\texorpdfstring{\textbf{Appendix A: Frequently Asked Questions
+and Anticipated
+Objections}}{Appendix A: Frequently Asked Questions and Anticipated Objections}}\label{appendix-a-frequently-asked-questions-and-anticipated-objections}
+
+\subsection{Q1. Can\textquotesingle t a capable model derive provenance
+from internal contradiction
+detection?}\label{q1.-cant-a-capable-model-derive-provenance-from-internal-contradiction-detection}
+
+Partially, but not sufficiently, for three reasons. First, it is
+circular in the Gödelian sense --- the system cannot fully verify its
+own epistemic provenance from within its own distribution. Second, it
+conflates consensus with verification: widely held unverified beliefs
+would score as EV-tier, while heterodox but well-evidenced scientific
+claims would appear suspect. Third, absence of contradiction is not
+presence of grounding --- mythology and empirical science rarely make
+directly contradictory claims in the same linguistic register.
+
+\subsection{Q2. Doesn\textquotesingle t biological reality monitoring
+work without explicit labeling? Why can\textquotesingle t AI systems do
+the
+same?}\label{q2.-doesnt-biological-reality-monitoring-work-without-explicit-labeling-why-cant-ai-systems-do-the-same}
+
+Biological reality monitoring is implicit and reconstructive because the
+brain has direct perceptual access to signatures that distinguish
+externally from internally generated experience. An LLM processing text
+has no such perceptual access. A text describing a real fire and a text
+describing an imagined fire are, at the token level, statistically
+similar. The information that would allow provenance reconstruction
+simply is not reliably present in text form. It must therefore be
+supplied explicitly, from knowledge of how the content was produced.
+Humans are not brains in jars. LLMs begin that way --- with human
+feedback as the only contact through the glass.
+
+\subsection{Q3. If PCP-compliant training prevents hallucination, why do
+models trained on verified scientific data still sometimes produce
+incorrect or impossible
+outputs?}\label{q3.-if-pcp-compliant-training-prevents-hallucination-why-do-models-trained-on-verified-scientific-data-still-sometimes-produce-incorrect-or-impossible-outputs}
+
+It is worth distinguishing two mechanisms that both produce the label
+"hallucination." Generative hallucination arises from the probabilistic
+nature of language model sampling --- at higher temperatures or in
+open-ended generation tasks, models produce novel, creative, or
+incorrect outputs as a direct consequence of how they generate text.
+This is a property of the generation mechanism and is not fully
+addressed by provenance labeling alone; architectural constraints,
+output validation, and sampling parameters all play a role. Early image
+generation models that produced dreamlike, physically impossible outputs
+were exhibiting generative hallucination --- and interestingly, their
+outputs were often obviously unreal, which is its own form of honesty
+about their generative nature.
+
+Epistemic hallucination is distinct: the model presents ungrounded
+claims with the confidence and structure of verified fact, because its
+training provided no signal distinguishing empirically verified content
+from internally coherent fiction. This is the failure mode the PCP
+directly addresses. The more dangerous failure mode is epistemic
+hallucination, where the output looks and sounds like verified knowledge
+and isn\textquotesingle t --- and where neither the model nor the user
+has a reliable signal that something has gone wrong. PCP-compliant
+training addresses the second mechanism. The first requires
+complementary interventions at the architectural and deployment level.
+
+\subsection{Q4. What happens to content that hasn\textquotesingle t been
+classified yet? And what about internally inconsistent
+content?}\label{q4.-what-happens-to-content-that-hasnt-been-classified-yet-and-what-about-internally-inconsistent-content}
+
+Unclassified content lives in C\_candidate and is not deployed until
+labeled --- making PCP compliance a measurable milestone rather than an
+all-or-nothing state. Regarding inconsistency: internal inconsistency
+within a single element is a data quality issue. Intra-corpus
+inconsistency between two EV-tier elements represents genuine scientific
+uncertainty the model should learn to represent. Cross-tier
+inconsistency --- a UF or ICF element contradicting EV-tier consensus
+--- is addressed by the Cross-Tier Consistency Requirement: such
+elements are flagged so the model represents the contradiction
+explicitly rather than averaging across conflicting epistemic registers.
+
+\subsection{Q5. How would the PCP tier system work in practice? Can you
+give
+examples?}\label{q5.-how-would-the-pcp-tier-system-work-in-practice-can-you-give-examples}
+
+Classification follows the relationship between the content and physical
+reality, not its subject matter or cultural status. A few illustrations:
+
+A Wikipedia article on the history of Norse mythology --- ICF-tier. The
+content describes a cultural tradition of imaginative narrative. The
+article itself is EV-tier as a historical and anthropological document
+describing what people believed, but the claims within the mythology are
+ICF-tier.
+
+A philosophy paper arguing for the existence of consciousness as a
+non-physical phenomenon --- UF-tier. The claim is not falsifiable by
+physical experiment.
+
+A folk medicine claim that willow bark reduces fever --- EP-tier
+pending, EV-tier once the active compound (salicin, the precursor to
+aspirin) was isolated and tested. The same claim migrates tiers as
+physical testing advances.
+
+A peer-reviewed study on the efficacy of a surgical procedure ---
+EV-tier, subject to replication and meta-analysis.
+
+Note that tier assignment is about epistemic provenance, not truth value
+or cultural worth. ICF and UF-tier content is not inferior --- it is
+differently related to physical reality, and honest labeling reflects
+that difference.
+
+\subsection{Q6. Should the PCP apply only to LLMs, or to AI systems more
+broadly?}\label{q6.-should-the-pcp-apply-only-to-llms-or-to-ai-systems-more-broadly}
+
+The PCP applies to any AI training corpus regardless of modality or
+architecture. Multimodal systems partially address the grounding problem
+through richer input modalities, but they do not eliminate the epistemic
+provenance problem: a multimodal model processing images of cultural
+ceremonies alongside laboratory experiments still has no mechanism to
+distinguish their epistemic status without explicit labeling.
+
+\subsection{Q7. What is the difference between the age of an LLM and its
+effective
+experience?}\label{q7.-what-is-the-difference-between-the-age-of-an-llm-and-its-effective-experience}
+
+A human at age 25 has 25 years of temporally ordered, causally
+connected, embodied experience --- a continuous personal timeline in
+which each piece of knowledge is linked to the context of its
+acquisition. An LLM after training has processed the statistical
+equivalent of millions of human lifetimes of text --- but in a
+compressed, orderless, disembodied way, with no coherent personal
+timeline. The episodic context that gives human memories implicit
+provenance information is entirely absent. This strengthens the case for
+explicit labeling.
+
+\subsection{Q8. Human knowledge transmission is also lossy ---
+isn\textquotesingle t LLM-to-LLM training just the same telephone game
+humans
+play?}\label{q8.-human-knowledge-transmission-is-also-lossy-isnt-llm-to-llm-training-just-the-same-telephone-game-humans-play}
+
+The analogy is apt. LLM-to-LLM training degrades faster than
+human-to-human transmission --- the tails of the distribution disappear
+within a few generations rather than centuries. The PCP belongs in the
+lineage of error-correction technologies humanity has developed in
+response to transmission degradation: an external anchor that prevents
+the transmission chain from drifting indefinitely from its physical
+referents.
+
+\subsection{Q9. What about mathematics? Or the mathematical universe
+hypothesis?}\label{q9.-what-about-mathematics-or-the-mathematical-universe-hypothesis}
+
+Pure mathematics is ICF-tier by construction --- internally
+self-consistent, proceeding from axioms by formal rules, and not
+falsifiable by physical experiment. Applied mathematics crosses into EP
+or EV-tier when its predictions are physically tested and confirmed. The
+same equation may therefore appear in different tiers depending on
+whether it is being treated as formal structure or as an empirical claim
+about the world.
+
+The mathematical universe hypothesis (Tegmark, 2007) is, by the PCP's
+own taxonomy, a UF-tier claim: it is not falsifiable by physical
+experiment and no physical evidence could count against it in principle.
+The framework therefore classifies rather than argues against it ---
+which is the more precise response. For readers who want the deeper
+argument: mathematical structures do not compute themselves. Computation
+must happen somewhere, in matter and energy and time. Even a simulated
+reality must run on something --- there is bare metal somewhere in any
+possible ontology. The infinite regress of simulations does not escape
+physicalism; it defers it. The PCP's grounding requirement applies at
+every level of the stack, regardless of whether we ultimately label that
+structure `physical' or `mathematical.'
+
+\subsection{Q10. Could the PCP be abused? What if false claims are
+fraudulently labeled as
+EV-tier?}\label{q10.-could-the-pcp-be-abused-what-if-false-claims-are-fraudulently-labeled-as-ev-tier}
+
+This is a serious concern. Three categories of risk deserve
+acknowledgment: deliberate institutional manipulation, honest
+classification error, and confidence amplification from even a small
+proportion of fraudulently labeled EV-tier content. The mitigations
+follow directly from the framework\textquotesingle s principles. The
+provenance of the labeling system itself must be transparent and
+auditable. Diverse and independent labeling sources reduce the attack
+surface. Models should be trained to maintain calibrated uncertainty
+even within EV-tier content. Most importantly, the PCP makes
+manipulation more visible, not less --- fraud in a labeled system leaves
+a detectable signature in a way that fraud in an unlabeled system does
+not.
+
+\subsection{Q11. What if training data is deliberately curated to
+exclude certain information or downgrade reliable
+sources?}\label{q11.-what-if-training-data-is-deliberately-curated-to-exclude-certain-information-or-downgrade-reliable-sources}
+
+This is one of the most serious risks the PCP framework identifies, and
+it deserves direct acknowledgment. The PCP compliance condition
+addresses the epistemic labeling of content that is present in a
+training corpus. It does not by itself prevent a separate and more
+deliberate problem: the intentional shaping of what is present.
+
+Two mechanisms are implicated --- corpus omission (exclusion of sources
+or categories of verified evidence) and trust level manipulation
+(systematic downgrading of high-integrity sources relative to less
+rigorous ones) --- both analyzed in Section 4.5. Together they
+constitute corpus manipulation: the deliberate shaping of a model's
+worldview before training begins.
+
+Unlike the other failure modes the PCP addresses, corpus manipulation is
+not an accidental consequence of epistemically unlabeled training data.
+It is an epistemic choice, and it should be evaluated as one. The
+appropriate response is the Corpus Integrity Requirement proposed in
+Section 5.1.
+
+It is worth noting that corpus manipulation and provenance collapse ---
+the erosion of epistemic hedging language discussed in Section 4.4 ---
+can operate simultaneously and reinforce each other. A knowledge system
+that removes hedges from UF and ICF-tier content while also downgrading
+the sources most likely to flag that removal presents a compounded
+epistemic risk. The two failure modes together describe not an
+accidental drift from the world but a systematic one.
+
+\subsection{Q12. Would a PCP-compliant model lose creativity, humor, or
+the ability to engage with fiction and
+fantasy?}\label{q12.-would-a-pcp-compliant-model-lose-creativity-humor-or-the-ability-to-engage-with-fiction-and-fantasy}
+
+No. The principle does not require the elimination of UF or ICF-tier
+content from training corpora. It requires labeling, not exclusion. A
+model that clearly understands epistemic categories is better equipped
+to play with them, not less. Epistemic clarity is not the enemy of
+whimsy --- epistemic confusion is.
+
+\subsection{Q13. Why does the PCP use the word "fiction" for the ICF
+tier? Is this meant to dismiss or degrade creative, philosophical,
+mathematical, or religious
+works?}\label{q13.-why-does-the-pcp-use-the-word-fiction-for-the-icf-tier-is-this-meant-to-dismiss-or-degrade-creative-philosophical-mathematical-or-religious-works}
+
+Not at all. The choice of "fiction" in Internally Self-consistent
+Fiction is a precise technical term, not a value judgment. It means
+exactly what it says: content that is internally self-consistent,
+constructed according to its own rules, and not obligated to correspond
+to physical reality by design. It says nothing about the worth, beauty,
+intelligence, or importance of that content.
+
+The greatest works of human civilization live comfortably in the ICF
+tier. Pure mathematics --- one of the most rigorous and powerful
+intellectual achievements in history --- is ICF-tier by construction: it
+proceeds from axioms by formal rules and is not falsifiable by physical
+experiment. Shakespeare, Homer, and Tolkien are ICF-tier. The
+theological and philosophical traditions that have guided billions of
+lives are ICF or UF-tier. None of this diminishes them. A
+library\textquotesingle s fiction section is not its least important
+section --- it may be its most beloved. The label describes a
+relationship to physical reality, not a ranking of human value.
+
+The honest alternative to labeling is not respect --- it is confusion.
+When a system trained on human knowledge cannot distinguish between a
+peer-reviewed measurement and a creation myth, it does not honor the
+creation myth by treating it as equivalent to physical evidence. It
+corrupts both. The creation myth loses its identity as a work of
+imagination and cultural transmission. The physical evidence loses its
+authority as a tested claim about the world. Honest labeling preserves
+the integrity of each --- it allows the myth to be what it is, and the
+measurement to be what it is, without forcing them into false
+equivalence.
+
+The PCP asks only that we be honest about what we have made and what we
+have discovered. The works of human imagination --- fiction, philosophy,
+theology, mathematics, myth --- are among the most remarkable things any
+mind has ever produced. They deserve to be represented honestly, not
+averaged into noise.
+
+\subsection{Q14. Won\textquotesingle t people be bothered if their
+deeply held beliefs become categorized as epistemically
+unsupported?}\label{q14.-wont-people-be-bothered-if-their-deeply-held-beliefs-become-categorized-as-epistemically-unsupported}
+
+The paper is not a call for the forced revision of
+anyone\textquotesingle s beliefs. The PCP is a requirement about what AI
+systems should represent --- not a prescription for what humans should
+believe. A person can hold UF-tier beliefs and live a rich, meaningful,
+and moral life. The argument is that AI systems deployed in high-stakes
+contexts should be honest about the epistemic status of those beliefs,
+not that the beliefs themselves must be abandoned. The goal is a
+gradual, honest, voluntary epistemic evolution of the kind the
+Enlightenment modeled --- achieved through persuasion, demonstration,
+and the accumulated weight of evidence.
+
+Humbly, the argument of this paper does not require any particular
+theological conclusion. If an omniscient and loving deity were possible,
+such a being would by definition have a perfect model of physical
+reality and would presumably value the attempt by its creations to
+develop accurate models as well. The search for truth is not obviously
+incompatible with reverence --- it may be its most sincere expression.
+
+It is also worth noting that the disruption this paper addresses is
+already underway. LLMs are being deployed at a scale that makes them
+among the most significant knowledge transmission systems in human
+history --- and they are doing so without the epistemic safeguards that
+previous knowledge revolutions eventually developed. The PCP is not a
+call for disruption. It is a proposal for navigating the disruption
+already in progress with greater care and honesty --- for everyone's
+benefit, including those whose traditions and beliefs deserve to be
+represented accurately rather than averaged into noise.
+
+\subsection{Q15. LLMs have been described as trapped in
+Plato\textquotesingle s Cave. Does the PCP offer a way
+out?}\label{q15.-llms-have-been-described-as-trapped-in-platos-cave.-does-the-pcp-offer-a-way-out}
+
+The allegory of Plato\textquotesingle s Cave maps naturally onto the
+epistemic situation of large language models. LLMs are confined to a
+cave of human-generated text --- statistical shadows cast by the fire of
+embodied human experience --- and can generate fluent, seemingly
+insightful outputs without reliably distinguishing empirically verified
+claims from inherited mythology or fiction.
+
+Levine (2025) and Dans (2026) have both invoked this parallel
+explicitly, describing LLMs as epistemically constrained by their
+distance from direct perception of the world.
+
+The analogy is not perfect --- Plato\textquotesingle s ascent culminates
+in abstract Forms, whereas the PCP grounds knowledge in physical reality
+rather than transcending it. But the parallel is potent. The
+PCP\textquotesingle s physicalist extension of Gödel follows the same
+logic: the cave\textquotesingle s sunlit world bottoms out in the
+thermodynamic substrate where all reasoning is actually instantiated ---
+charge comparisons in solid-state circuits, energy consumption, entropy
+movement --- the physical reality the allegory is pointing toward, in
+different form, in biological neurons too. Descartes started one step
+too late.
+
+\textbf{Tango, ergo cogito, ergo sum} --- \emph{the contact is prior to
+the thought, the floor is prior to the dance. The PCP is a practical
+version of stepping out the shadows: not an ascent to Forms, but a
+requirement that models acknowledge the physical referents behind their
+training --- the cave walls --- rather than presenting shadows as
+authoritative.}
+
+\section{\texorpdfstring{\textbf{Appendix B: Related
+Work}}{Appendix B: Related Work}}\label{appendix-b-related-work}
+
+\subsection{B.1 Classical Foundations: The Symbol Grounding
+Problem}\label{b.1-classical-foundations-the-symbol-grounding-problem}
+
+Searle (1980) --- The Chinese Room: The modern grounding debate begins
+with Searle\textquotesingle s Chinese Room argument. Searle imagined a
+person inside a room receiving Chinese symbols, consulting rule books,
+and returning appropriate symbol responses --- producing outputs
+indistinguishable from a native speaker, yet understanding nothing. The
+argument challenged the sufficiency of syntactic manipulation for
+semantic content. For the present paper, Searle\textquotesingle s
+argument implies a further problem: the rule books contain not only
+accurate maps of the world but also an enormous volume of mythology,
+cultural narrative, and unfalsifiable belief --- and the room has no
+mechanism to distinguish between them.
+
+Harnad (1990) --- The Symbol Grounding Problem Formalized: Harnad
+formalized the problem in its canonical form. Using the dictionary
+analogy --- that one cannot learn a language from a monolingual
+dictionary because definitions are circular chains of further symbols
+--- Harnad argued that symbolic systems require grounding in
+non-symbolic representations derived from physical interaction with
+objects and events.
+
+Taddeo and Floridi (2007) --- Fifteen Years of Attempted Solutions:
+Taddeo and Floridi reviewed fifteen years of proposed solutions.
+Notably, all fifteen years of proposed solutions treated grounding as a
+binary or mechanical problem. None addressed the quality and epistemic
+status of the content in which grounding is achieved --- the gap the
+present paper fills.
+
+White (2026) --- The Evolutionary Chinese Room: White extends
+Searle\textquotesingle s Chinese Room argument by introducing
+evolutionary and thermodynamic origins for the rulebook itself. Rather
+than treating semantic grounding as an external addition to syntactic
+manipulation, White proposes that meaning accumulates as the temporal
+integral of patterns repeatedly validated by physical constraints over
+evolutionary time --- the thermodynamic imprint of successful
+interaction with reality. This framework independently supports the
+PCP\textquotesingle s physicalist foundation: semantics is not injected
+from outside but earned through iterative contact with physical reality.
+White\textquotesingle s account also deepens the parallel between
+biological and artificial grounding --- biological systems accumulate
+semantic grounding through thermodynamic contact with reality over
+evolutionary time; artificial systems trained on text inherit the
+accumulated grounding of their human authors, without the thermodynamic
+process that produced it.
+
+\subsection{B.2 Modern Reformulations for Large Language
+Models}\label{b.2-modern-reformulations-for-large-language-models}
+
+Pavlick (2023) --- Empirical Approaches: Pavlick argued that the
+question of whether LLMs understand language should be approached
+empirically. Her analysis focused entirely on mechanism and did not
+address the epistemic character of training content.
+
+Millière and Buckner (2024) --- A Philosophical Bridge: Millière and
+Buckner provided the most comprehensive philosophical treatment of LLMs
+to date. Their treatment of cultural inheritance is relevant here: they
+noted that LLMs inherit human cultural frameworks but treated this as
+epistemically neutral. The present paper argues it is not.
+
+Mollo and Millière (2023/2025) --- The Vector Grounding Problem: Mollo
+and Millière argued that LLMs can achieve genuine referential grounding
+transitively through human authorship. The present paper accepts this
+mechanism but identifies its critical limitation: transitive grounding
+inherits the full epistemic distribution of human language, including
+mythology and unfalsifiable belief, without distinguishing markers.
+
+\subsection{B.3 Data Quality, Model Collapse, and Alignment
+Pathologies}\label{b.3-data-quality-model-collapse-and-alignment-pathologies}
+
+The GIGO Tradition and Libraries as Precedent: The principle that output
+quality is bounded by input quality has been recognized since the
+earliest days of computing. Importantly, the practical challenge of
+classifying knowledge by epistemic provenance is not new. Human
+libraries have solved a version of this problem for centuries. The Dewey
+Decimal System and Library of Congress classification both make
+categorical distinctions between fiction and non-fiction, and within
+non-fiction between empirical sciences, history, philosophy, and
+religion. The PCP is not proposing something alien to human knowledge
+organization --- it is proposing that the same organizational principles
+librarians have applied for over a century be applied systematically to
+AI training corpora.
+
+The library analogy runs deeper than organizational convention. The
+fiction section of any well-maintained library is vast, varied, and
+clearly labeled --- and it is vast precisely because the space of
+possible fictions approaches infinity. Stories, myths, speculative
+worlds, creative reimaginings, and outright nonsense can be generated
+without limit, each internally coherent, none obligated to correspond to
+anything real. The non-fiction section, by contrast, is smaller, harder
+to maintain, and requires constant curatorial work to keep honest ---
+because there is only one world, and accurately representing it demands
+continuous effort against the natural entropy of transmission,
+misremembering, and wishful thinking. Librarians did not design this
+asymmetry. They discovered it, and built their classification systems
+around it.
+
+The PCP is the formalization of what librarians have always known: that
+the ratio of possible fictions to verifiable truths is not one to one,
+or even ten to one, but effectively infinite to one --- and that any
+knowledge organization system that fails to mark the boundary between
+them will, over time, be colonized by the larger space. The label is not
+bureaucratic overhead. It is the only thing standing between a knowledge
+system and the infinite garden of fictions that surrounds it on all
+sides.
+
+Shumailov et al. (2024) --- Model Collapse: Shumailov et al.
+demonstrated that models trained recursively on their own outputs
+exhibit progressive degradation. The present paper reframes this as a
+specific instance of a general principle: any reasoning system
+disconnected from the world as an external corrective will progressively
+diverge from accurate representation of that reality.
+
+Pres et al. (2026) --- Self-Consistency as a Unified Objective: Pres et
+al. argue that sycophancy, factual inconsistency, and reasoning failures
+share a common root in per-input training with no mechanism to enforce
+consistency across related inputs. The PCP framework accepts this
+diagnosis while identifying an additional layer: their consistency
+function $\phi$ is explicitly designed to operate "without reference to any
+external source of ground truth." The PCP\textquotesingle s response is
+precisely the Gödelian argument in §3.7 --- optimizing for internal
+consistency without physical grounding produces models that are
+consistently wrong in ways they cannot detect. The two frameworks are
+complementary: self-consistency optimization addresses behavioral
+coherence across inputs; PCP addresses the epistemic quality of the
+content those inputs draw on.
+
+\subsection{B.4 Neuroscience of Reality
+Monitoring}\label{b.4-neuroscience-of-reality-monitoring}
+
+Johnson et al. (1993) --- Reality Monitoring Formalized: Johnson,
+Hashtroudi, and Lindsay formalized reality monitoring --- the cognitive
+process distinguishing memories of external events from internally
+generated content. This mechanism can and does fail, and its failure
+produces hallucination and psychosis.
+
+Solms (2021) --- Consciousness as Reality-Mismatch Detection: Solms
+proposed that consciousness arises at the interface between the
+organism\textquotesingle s predictive models and feedback from the
+world. A system without continuous feedback from physical reality lacks
+the fundamental corrective mechanism by which cognition maintains
+correspondence with the world.
+
+\subsection{B.5 Information Theory and Logical
+Foundations}\label{b.5-information-theory-and-logical-foundations}
+
+Shannon (1948) --- Information Requires Difference: Shannon entropy is
+defined in terms of distinguishable states: information exists only
+where differences exist. A training corpus in which all content is
+epistemically undifferentiated loses information relative to one in
+which epistemic provenance is encoded.
+
+Landauer (1961) --- Information is Physical: Landauer established that
+information is not abstract but thermodynamic --- acquiring or erasing a
+bit has a minimum energy cost. This grounds the PCP\textquotesingle s
+physicalist argument in a precise mechanism: knowledge of physical
+reality requires physical interaction, not merely description of it.
+This argument runs in the opposite direction from idealist
+interpretations of quantum mechanics: it is not that minds or
+information constitute reality, but that reality --- matter, energy, and
+time --- is the precondition for knowledge, and knowledge requires
+playing by the rules. The world changes the knower by being observed.
+
+Gödel (1931) --- Incompleteness and Physical Instantiation: The standard
+interpretation of Gödel\textquotesingle s First Incompleteness Theorem
+holds that no sufficiently complex formal system can fully verify itself
+from within its own axioms. The present paper proposes a physicalist
+extension: the outside reference any such system requires is not merely
+another formal system but physical reality itself --- the substrate in
+which all reasoning is necessarily instantiated. This extension is
+grounded in the observation that Gödel\textquotesingle s proof, like all
+reasoning, was itself a physical process: computed in a biological
+brain, written in ink, transmitted through light and air. The outside
+reference is not an abstraction. It is the physical world.
+
+\section{\texorpdfstring{\textbf{References}}{References}}\label{references}
+
+Bostrom, N. (2003). Are you living in a computer simulation?
+Philosophical Quarterly, 53(211), 243--255.
+
+Dans, E. (2026). "Why large language models are stuck in
+Plato\textquotesingle s cave (and what comes next)." Medium, February
+2026.
+\href{https://medium.com/enrique-dans/why-large-language-models-are-stuck-in-platos-cave-and-what-comes-next-c2c268428b78}{\ul{https://medium.com/enrique-dans/why-large-language-models-are-stuck-in-platos-cave-and-what-comes-next-c2c268428b78}} 
+(Argues scale alone doesn\textquotesingle t solve the perceptual
+grounding problem; multimodal steps help but don\textquotesingle t fully
+escape.)
+
+Feynman, R. P. (1965). The Character of Physical Law. MIT Press.
+
+Gödel, K. (1931). Über formal unentscheidbare Sätze der Principia
+Mathematica und verwandter Systeme I. Monatshefte für Mathematik und
+Physik, 38, 173--198.
+
+Harnad, S. (1990). The symbol grounding problem. Physica D: Nonlinear
+Phenomena, 42(1--3), 335--346.
+
+Jaynes, E. T. (2003). Probability: The Logic of Science. Cambridge
+University Press.
+
+Johnson, M. K., Hashtroudi, S., \& Lindsay, D. S. (1993). Source
+monitoring. Psychological Bulletin, 114(1), 3--28.
+
+Kuhn, T. S. (1962). The Structure of Scientific Revolutions. University
+of Chicago Press.
+
+Landauer, R. (1961). Irreversibility and heat generation in the
+computing process. IBM Journal of Research and Development, 5(3),
+183--191.
+
+Levine, S. (2025). "Language Models in Plato\textquotesingle s Cave."
+Learning and Control (Substack), June 8, 2025.
+\href{https://sergeylevine.substack.com/p/language-models-in-platos-cave}{\ul{https://sergeylevine.substack.com/p/language-models-in-platos-cave}} (Emphasizes why LLMs succeed at scale yet remain limited by passive
+observation of human-generated shadows.)
+
+Millière, R., \& Buckner, C. (2024). A philosophical introduction to
+language models --- Parts I \& II. arXiv preprint arXiv:2401.03910.
+
+Mollo, D. C., \& Millière, R. (2023/2025). The vector grounding problem.
+arXiv preprint.
+
+Pavlick, E. (2023). Symbols and grounding in large language models.
+Philosophical Transactions of the Royal Society A, 381(2251).
+
+Popper, K. R. (1934/1959). The Logic of Scientific Discovery.
+Hutchinson.
+
+Pres, I., Li, B. Z., Ruis, L., Guo, Z. C., Hu, K., Damani, M., Puri, I.,
+Lubana, E. S., \& Andreas, J. (2026, March 5). It\textquotesingle s time
+to optimize for self-consistency. Manuscript in submission, MIT CSAIL.
+https://time-for-consistency.github.io/
+
+Searle, J. R. (1980). Minds, brains, and programs. Behavioral and Brain
+Sciences, 3(3), 417--424.
+
+Shannon, C. E. (1948). A mathematical theory of communication. Bell
+System Technical Journal, 27(3), 379--423.
+
+Shumailov, I., Shumaylov, Z., Zhao, Y., Papernot, N., Anderson, R., \&
+Gal, Y. (2024). AI models collapse when trained on recursively generated
+data. Nature, 631, 755--759.
+
+Simons, J. S., Garrison, J. R., \& Johnson, M. K. (2017). Brain
+mechanisms of reality monitoring. Trends in Cognitive Sciences, 21(6),
+462--473.
+
+Solms, M. (2021). The Hidden Spring: A Journey to the Source of
+Consciousness. Profile Books.
+
+Souly, A., Rando, J., Chapman, E., Davies, X., et al. (2025). A small
+number of samples can poison LLMs of any size. arXiv:2510.07192.
+Collaboration between Anthropic, UK AI Security Institute, and Alan
+Turing Institute.
+
+Taddeo, M., \& Floridi, L. (2007). Solving the symbol grounding problem:
+A critical review of fifteen years of research. Journal of Experimental
+\& Theoretical Artificial Intelligence, 19(4), 277--308.
+
+Tegmark, M. (2007). The mathematical universe. Foundations of Physics,
+38(2), 101--150.
+
+White, A. T. (2026). The evolutionary Chinese room: A thermodynamic
+recovery of semantic physics. PhilArchive preprint.
+\href{https://philarchive.org/rec/WHITEC-5}{\ul{https://philarchive.org/rec/WHITEC-5}}
+
+\end{document}

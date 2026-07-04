@@ -1,0 +1,41 @@
+# Paper build pipeline — STUB / manual-only for now.
+#
+# Roadmap (Part B): on push, convert each paper's Markdown source to both a PDF
+# (via LaTeX) and a styled HTML web version with pandoc, then publish the built
+# artifacts to the pgt-papers GitHub Pages site. Paper 1 is authored in LaTeX and
+# is built with latexmk instead of pandoc.
+#
+# Kept as `workflow_dispatch` (manual trigger) until the conventions below are
+# finalized, so it never auto-runs or fails a push. Enable `push` triggers when
+# ready.
+
+name: build-papers
+
+on:
+  workflow_dispatch: {}
+  # push:
+  #   branches: [ main ]
+  #   paths: [ 'papers/**' ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install pandoc + LaTeX
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y pandoc texlive-latex-recommended texlive-latex-extra texlive-fonts-recommended latexmk
+
+      # Convention: each papers/NN-slug/source/ holds either
+      #   - main.md + refs.bib          (Markdown papers -> pandoc), or
+      #   - <name>.tex + <name>.bib     (LaTeX papers   -> latexmk)
+      - name: Build (placeholder)
+        run: |
+          echo "Build step not yet wired. See README 'Repository layout'."
+          echo "Planned per-paper output: <slug>.pdf and index.html (web version)."
+
+      # - name: Publish to Pages
+      #   uses: actions/upload-pages-artifact@v3
+      #   with: { path: . }
