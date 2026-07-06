@@ -1,21 +1,34 @@
-# Paper build pipeline — STUB / manual-only for now.
+# Verify that every paper builds from source with pandoc (HTML) + tectonic (PDF).
 #
-# Roadmap (Part B): on push, convert each paper's Markdown source to both a PDF
-# (via LaTeX) and a styled HTML web version with pandoc, then publish the built
-# artifacts to the pgt-papers GitHub Pages site. Paper 1 is authored in LaTeX and
-# is built with latexmk instead of pandoc.
-#
-# Kept as `workflow_dispatch` (manual trigger) until the conventions below are
-# finalized, so it never auto-runs or fails a push. Enable `push` triggers when
-# ready.
+# This is a CHECK, not a deploy: GitHub Pages continues to serve the committed
+# files from the `main` branch. Authors build locally (`make`) and commit the
+# generated index.html / <slug>.pdf; this workflow guarantees the sources still
+# build cleanly, and uploads the freshly built outputs as a downloadable
+# artifact for convenience.
 
 name: build-papers
 
 on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'papers/**'
+      - 'template/**'
+      - 'assets/**'
+      - 'build.sh'
+      - 'Makefile'
+      - '.github/workflows/build.yml'
+  pull_request:
+    paths:
+      - 'papers/**'
+      - 'template/**'
+      - 'assets/**'
+      - 'build.sh'
   workflow_dispatch: {}
-  # push:
-  #   branches: [ main ]
-  #   paths: [ 'papers/**' ]
+
+concurrency:
+  group: build-papers-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build:
@@ -23,19 +36,31 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install pandoc + LaTeX
+      - name: Install pandoc
         run: |
-          sudo apt-get update
-          sudo apt-get install -y pandoc texlive-latex-recommended texlive-latex-extra texlive-fonts-recommended latexmk
+          ver=3.9.0.1
+          curl -fsSL -o pandoc.deb \
+            "https://github.com/jgm/pandoc/releases/download/${ver}/pandoc-${ver}-1-amd64.deb"
+          sudo dpkg -i pandoc.deb
+          pandoc --version | head -1
 
-      # Convention: each papers/NN-slug/source/ holds either
-      #   - main.md + refs.bib          (Markdown papers -> pandoc), or
-      #   - <name>.tex + <name>.bib     (LaTeX papers   -> latexmk)
-      - name: Build (placeholder)
+      - name: Install tectonic (LaTeX engine for PDF)
         run: |
-          echo "Build step not yet wired. See README 'Repository layout'."
-          echo "Planned per-paper output: <slug>.pdf and index.html (web version)."
+          curl --proto '=https' --tlsv1.2 -fsSL https://drop-sh.fullyjustified.net | sh
+          sudo mv tectonic /usr/local/bin/
+          tectonic --version
 
-      # - name: Publish to Pages
-      #   uses: actions/upload-pages-artifact@v3
-      #   with: { path: . }
+      - name: Build all papers
+        run: PDF_ENGINE=tectonic ./build.sh
+
+      - name: Upload built papers
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: built-papers
+          path: |
+            papers/**/index.html
+            papers/**/*.pdf
+            template/index.html
+            template/*.pdf
+          if-no-files-found: ignore

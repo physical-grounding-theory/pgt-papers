@@ -1,0 +1,7 @@
+# Keep line endings LF for text so the build works identically on CI (Linux)
+# and on Windows checkouts. Shell scripts MUST stay LF (a CRLF shebang breaks
+# execution on the runner).
+* text=auto eol=lf
+*.sh    text eol=lf
+*.bib   text eol=lf
+*.pdf   binary

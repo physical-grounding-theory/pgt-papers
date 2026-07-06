@@ -1,0 +1,6 @@
+% PDF header-includes for pandoc Markdown -> PDF builds (engine: tectonic/xelatex).
+% Layout only — no exotic fonts, so it compiles anywhere tectonic runs.
+\usepackage{microtype}
+\usepackage{parskip}
+\setlength{\emergencystretch}{3em}   % avoid overfull lines in narrow columns
+% hyperref/geometry/colorlinks come from build.sh -V flags via pandoc's default template.

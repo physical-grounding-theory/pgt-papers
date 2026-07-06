@@ -1,0 +1,15 @@
+# New-paper starter — copy this folder to papers/NN-slug/ and edit.
+# Doubles as the pipeline smoke test (`./build.sh template`).
+
+title: "Example Paper: A Template"
+subtitle: "How a PGT paper is authored and built"
+author: "Nathan Martin"
+date: "2026"
+lang: en
+
+# --- build control (read by build.sh) ---
+build: pandoc            # pandoc (Markdown) | latex (raw .tex) | prebuilt (skip)
+source: source/paper.md  # the ONE canonical source; older drafts are ignored
+bibliography: source/refs.bib
+output: example-paper    # base name for the built PDF
+web: true                # also build an HTML reading version (index.html)

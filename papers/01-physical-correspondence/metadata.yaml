@@ -1,0 +1,13 @@
+title: "Reality as Corrective: Physical Grounding as a Unified Solution to AI Alignment Pathologies"
+author: "Nathan Martin"
+date: "March 2026"
+lang: en
+
+# --- build control (read by build.sh) ---
+# Paper 1 is the published version-of-record (SSRN 6397178). Its compiled PDF is
+# committed as the canonical artifact, so the pipeline does NOT rebuild it.
+# The LaTeX source lives in source/ for reference and reproducibility.
+build: prebuilt
+output: reality-as-corrective
+source: source/PCP_AI_Grounding_Position.tex
+web: false

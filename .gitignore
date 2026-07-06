@@ -9,6 +9,10 @@
 *.blg
 *.synctex.gz
 
+# Generated smoke-test outputs (the template is a fixture, not a real paper)
+template/index.html
+template/*.pdf
+
 # OS / editor cruft
 .DS_Store
 Thumbs.db

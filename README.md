@@ -65,15 +65,22 @@ a link above are public yet.
 
 ```
 papers/NN-slug/
+  metadata.yaml  # declares the ONE canonical source + build settings
   README.md      # abstract, status, citation
-  <paper>.pdf    # compiled paper
+  <paper>.pdf    # built (or, for Paper 1, prebuilt) PDF
+  index.html     # built web reading version
   source/        # manuscript source (LaTeX or Markdown + .bib)
 shared/
   glossary.md    # core PGT vocabulary
+assets/          # shared web CSS + PDF header for the build
+template/        # copy this to start a new paper (also the build smoke test)
+build.sh, Makefile   # the pandoc build pipeline — see BUILDING.md
 ```
 
-Each paper is built from its `source/` to PDF (and, over time, a web version)
-by the `pandoc` pipeline in `.github/workflows/` — see that file for status.
+Each paper is built from its declared canonical source (Markdown+BibTeX or
+LaTeX) to a PDF and an HTML reading version with **pandoc** — run `./build.sh`
+or `make`. See **[BUILDING.md](BUILDING.md)** for the full pipeline, prerequisites,
+and how to add a paper; a GitHub Action re-runs the build on every push as a check.
 
 Papers are added only after passing the **[Review & Polish gate](REVIEW_CHECKLIST.md)**
 — peer review plus rigorous self-QA (theorem checks, citation verification,
