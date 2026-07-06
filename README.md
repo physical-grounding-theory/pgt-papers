@@ -75,6 +75,10 @@ shared/
 Each paper is built from its `source/` to PDF (and, over time, a web version)
 by the `pandoc` pipeline in `.github/workflows/` — see that file for status.
 
+Papers are added only after passing the **[Review & Polish gate](REVIEW_CHECKLIST.md)**
+— peer review plus rigorous self-QA (theorem checks, citation verification,
+terminology, falsifiability) before anything is posted publicly.
+
 ---
 
 ## Citing
